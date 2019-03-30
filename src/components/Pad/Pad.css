@@ -1,0 +1,10 @@
+.pad{
+    box-sizing: border-box;
+    width: 23%;
+    padding-bottom: 23%;
+    background-color: aqua;
+    border: 1px solid black;
+    display: inline-block;
+    cursor: pointer;
+    margin: 1%;
+}
