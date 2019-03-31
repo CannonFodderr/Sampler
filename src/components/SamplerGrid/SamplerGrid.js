@@ -3,15 +3,18 @@ import {Context} from '../../contexts/SamplerContext';
 import Pad from '../Pad/Pad';
 import './SamplerGrid.css';
 
-const renderPad = (index) => {
-    console.log(index)
-    return <Pad key={index} id={index}/>
-}
 
 const SamplerGrid = () => {
     const context = useContext(Context);
-    let gridArr = context.GridPadsArr;
-    console.log(gridArr)
+    const gridArr = context.GridPadsArr;
+    const renderPad = (item) => {
+        return <Pad 
+        key={item.id} 
+        id={item.id} 
+        name={item.name}
+        onClick={() => {context.handlePadClick()}}
+        />
+    }
     return (
         <div className="grid-wrapper">
             {gridArr.map((item) => { return renderPad(item) })}

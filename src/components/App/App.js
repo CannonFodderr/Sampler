@@ -1,15 +1,27 @@
 import React, {useContext} from 'react';
-import SamplerGrid from '../SamplerGrid/SamplerGrid';
 import {Context} from '../../contexts/SamplerContext';
-
+import Header from '../Header/Header';
+import SamplerGrid from '../SamplerGrid/SamplerGrid';
+import Controls from '../Controls/Controls';
+import StartScreen from '../StartScreen/StartScreen';
 
 export default function App () {
     const context = useContext(Context);
-    console.log(context)
+    const renderAppContext = () => {
+        if(!context.ctx) return <StartScreen />
+        let editToggleText = context.editMode ? 'Player' : 'Editor'
+        let title = context.editMode ? 'Sampler Editor' : 'Sampler Player'
+        return (
+            <div>
+                <Header title={title} />
+                <Controls editToggleText={editToggleText}/>
+                <SamplerGrid />
+            </div>
+        )
+    }
     return(
-        <div>
-            <h1>Sampler</h1>
-            <SamplerGrid />
+        <div className="app-wrapper">
+            {renderAppContext()}
         </div>
     )
 }
