@@ -7,11 +7,15 @@ import './SamplerGrid.css';
 const SamplerGrid = () => {
     const context = useContext(Context);
     const gridArr = context.GridPadsArr;
+
     const renderPad = (item) => {
+        let backgroundColor = "gray";
+        if(context.editMode)
         return <Pad 
         key={item.id} 
         id={item.id} 
         name={item.name}
+        color={color}
         onClick={() => {context.handlePadClick()}}
         />
     }
