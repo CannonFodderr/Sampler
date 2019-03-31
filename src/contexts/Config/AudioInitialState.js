@@ -1,9 +1,10 @@
 export default {
     ctx: null,
-    NumPads: 16,
-    GridPadsArr: [],
+    numPads: 16,
+    banks: 4,
+    currentbank: 1,
+    gridPadsArr: [],
     editMode: false,
-    sources: {
-        15: { source: "demo", name: "NAME", isPlaying: false}
-    }
+    sources: {},
+    selectedPad: 0
 }

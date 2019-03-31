@@ -18,39 +18,53 @@ export function SamplerContextStore(props) {
         return setState({...state, ctx})
     }
     const generateGrid = () => {
-        let GridPadsArr = []
-        for(let i = 0; i < state.NumPads; i++){
+        let gridPadsArr = []
+        for(let i = 0; i < state.numPads; i++){
             let newPad = new GridPad({id: i})
-            GridPadsArr.push(newPad)
+            gridPadsArr.push(newPad)
         }
-        return setState({...state, GridPadsArr})
+        return setState({...state, gridPadsArr})
     }
     const toggleEditMode = () => {
         let editMode = !state.editMode;
         return setState({...state, editMode })
     }
-    const updateGridPad = (padId, file) => {
+    const updateGridPad = (file) => {
         let reader = new FileReader();
         reader.onload = e => {
             state.ctx.decodeAudioData(e.target.result, (buffer) => {
-                let source = state.ctx.createBufferSource();
-                source.connect(state.ctx.destination)
-                source.buffer = buffer;
                 let sourcesList = {...state.sources}
                 let name = file.name.split('.')[0]
-                sourcesList[padId] = {source: source, name, isPlaying: false}
+                sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false}
                 setState({...state, sources: sourcesList})
             })
         }
         reader.readAsArrayBuffer(file);
     }
-    useEffect(() => { if(state.GridPadsArr.length < 1) return generateGrid() })
-    console.log(state)
+    const handlePadClick = (padId) => {
+        setState({...state, selectedPad: padId});
+        let pad =  state.sources[padId]
+        if(pad && pad.buffer){
+            let source = state.ctx.createBufferSource();
+            source.connect(state.ctx.destination)
+            source.buffer = state.sources[padId].buffer;
+            source.start();
+            source.stop(state.ctx.currentTime + source.buffer.duration);
+        }
+    }
+    const clearSelectedPad = () => {
+        let sourcesList = {...state.sources}
+        sourcesList[state.selectedPad] = {buffer: null, name: "", isPlaying: false}
+        setState({...state, sources: sourcesList})
+    }
+    useEffect(() => { if(state.gridPadsArr.length < 1) return generateGrid() })
     return <Context.Provider value={{
         ...state, 
         setCTX,
         toggleEditMode,
-        updateGridPad
+        updateGridPad,
+        handlePadClick,
+        clearSelectedPad
     }}>{props.children}</Context.Provider>
 }
 
