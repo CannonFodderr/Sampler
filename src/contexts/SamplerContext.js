@@ -6,6 +6,10 @@ class GridPad {
         this.id = id
         this.isLoaded = false
         this.name = `Pad${id}`
+        this.source = null
+        this.isPlaying = false
+        this.sampleStart = 0
+        this.sampleEnd = this.sampleStart + 2;
     }
 }
 
@@ -42,14 +46,22 @@ export function SamplerContextStore(props) {
         reader.readAsArrayBuffer(file);
     }
     const handlePadClick = (padId) => {
-        setState({...state, selectedPad: padId});
-        let pad =  state.sources[padId]
-        if(pad && pad.buffer){
-            let source = state.ctx.createBufferSource();
-            source.connect(state.ctx.destination)
-            source.buffer = state.sources[padId].buffer;
-            source.start();
-            source.stop(state.ctx.currentTime + source.buffer.duration);
+        let selectedSource =  state.sources[padId]
+        if(selectedSource && selectedSource.buffer){
+            if(state.gridPadsArr[padId].source){
+                state.gridPadsArr[padId].source.stop();
+            }
+            let newSource = state.ctx.createBufferSource();
+            newSource.buffer = state.sources[padId].buffer;
+            newSource.connect(state.ctx.destination);
+            let newPadsArr = state.gridPadsArr;
+            newPadsArr[padId].source = newSource;
+            setState({...state, gridPadsArr: newPadsArr, selectedPad: padId})
+            state.gridPadsArr[padId].source.start(state.ctx.currentTime + state.gridPadsArr[padId].sampleStart);
+            state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd)
+            ;
+        } else {
+            setState({...state, selectedPad: padId});
         }
     }
     const clearSelectedPad = () => {
@@ -58,6 +70,7 @@ export function SamplerContextStore(props) {
         setState({...state, sources: sourcesList})
     }
     useEffect(() => { if(state.gridPadsArr.length < 1) return generateGrid() })
+    console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,

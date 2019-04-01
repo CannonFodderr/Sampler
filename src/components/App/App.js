@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
 import {Context} from '../../contexts/SamplerContext';
-import Hud from '../Hud/Hud';
 import SamplerGrid from '../SamplerGrid/SamplerGrid';
 import StartScreen from '../StartScreen/StartScreen';
 
@@ -10,7 +9,6 @@ export default function App () {
         if(!context.ctx) return <StartScreen />
         return (
             <div>
-                <Hud />
                 <SamplerGrid />
             </div>
         )

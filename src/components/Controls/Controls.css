@@ -1,0 +1,18 @@
+.file-selector-wrapper{
+    display: inline;
+}
+.ctl-btn{
+    height: 100%;
+    width: fit-content;
+    border: 1px solid #0B0002;
+    color: #F2EDEA;
+    background-color: #8C7D72;
+    padding: 0.5vh 1vw;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+}
+.ctl-btn:hover{
+    color: #F2EDEA;
+    background-color: #14ABBD;
+    border: 1px solid #0B0002;
+}

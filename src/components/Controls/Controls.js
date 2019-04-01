@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import './Controls.css';
 import {Context} from '../../contexts/SamplerContext';
 
 const Controls = (props) => {
@@ -10,17 +11,36 @@ const Controls = (props) => {
         return context.updateGridPad(file)
     }
     const renderFileInput = () => {
-        return <input type="file" onChange={(e) => validateSelectedFile(e.target.files[0])} accept="audio/*"/>
+        const openFileSelector = (e) => {
+            e.preventDefault();
+            let fileSelector = document.getElementById("fileSelector");
+            fileSelector.click();
+        }
+        return (
+            <div className="file-selector-wrapper">
+                <button 
+                className="ctl-btn" 
+                onClick={(e) => openFileSelector(e)}>Add Sample</button>
+                <input 
+                type="file" 
+                style={{display:"none"}}
+                id="fileSelector"
+                onChange={(e) => validateSelectedFile(e.target.files[0])} 
+                accept="audio/*"/>
+            </div>    
+        )
     }
     const renderFileLoadUnload = () => {
         let currentPad = context.sources[context.selectedPad]
         if(context.editMode && !currentPad) return renderFileInput()
-        if(context.editMode && currentPad.buffer) return <button onClick={() => context.clearSelectedPad()}>Clear Sample</button>
+        if(context.editMode && currentPad.buffer) return <button className="ctl-btn" onClick={() => context.clearSelectedPad()}>Clear Sample</button>
         if(currentPad && !currentPad.buffer) return renderFileInput()
     }
     return (
         <div className="controls-wrapper">
-            <button onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
+            <button 
+            className="ctl-btn" 
+            onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
             {renderFileLoadUnload()}
         </div>
     )
