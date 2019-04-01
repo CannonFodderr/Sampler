@@ -57,7 +57,7 @@ export function SamplerContextStore(props) {
             let newPadsArr = state.gridPadsArr;
             newPadsArr[padId].source = newSource;
             setState({...state, gridPadsArr: newPadsArr, selectedPad: padId})
-            state.gridPadsArr[padId].source.start(state.ctx.currentTime + state.gridPadsArr[padId].sampleStart);
+            state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart /100 , state.gridPadsArr[padId].sampleEnd);
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd)
             ;
         } else {
@@ -69,6 +69,17 @@ export function SamplerContextStore(props) {
         sourcesList[state.selectedPad] = {buffer: null, name: "", isPlaying: false}
         setState({...state, sources: sourcesList})
     }
+    const updateEditorData = ({cmd, val}) => {
+        let newPadsArr = state.gridPadsArr;
+        if(cmd === "start"){
+            newPadsArr[state.selectedPad].sampleStart = Number(val);
+            setState({...state, gridPadsArr: newPadsArr});
+        }
+        if(cmd === "end"){
+            newPadsArr[state.selectedPad].sampleEnd = Number(val);
+            setState({...state, gridPadsArr: newPadsArr});
+        }
+    }
     useEffect(() => { if(state.gridPadsArr.length < 1) return generateGrid() })
     console.log(state)
     return <Context.Provider value={{
@@ -77,7 +88,8 @@ export function SamplerContextStore(props) {
         toggleEditMode,
         updateGridPad,
         handlePadClick,
-        clearSelectedPad
+        clearSelectedPad,
+        updateEditorData
     }}>{props.children}</Context.Provider>
 }
 

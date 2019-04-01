@@ -8,3 +8,7 @@
     cursor: pointer;
     margin: 1%;
 }
+
+.pad:hover{
+    background-color: blueviolet;
+}

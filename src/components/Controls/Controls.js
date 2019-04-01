@@ -20,7 +20,7 @@ const Controls = (props) => {
             <div className="file-selector-wrapper">
                 <button 
                 className="ctl-btn" 
-                onClick={(e) => openFileSelector(e)}>Add Sample</button>
+                onClick={(e) => openFileSelector(e)}>LOAD</button>
                 <input 
                 type="file" 
                 style={{display:"none"}}

@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 import Hud from '../Hud/Hud';
+import PadEditor from '../PadEditor/PadEditor';
 import Pad from '../Pad/Pad';
 import './SamplerGrid.css';
 
@@ -21,10 +22,14 @@ const SamplerGrid = () => {
         backgroundColor={backgroundColor}
         />
     }
+    const rendercontent = () => {
+        if(!context.editMode) return <div>{gridArr.map((item) => { return renderPad(item) })}</div>
+        return <PadEditor />
+    }
     return (
         <div className="grid-wrapper" style={{backgroundColor: Colors.brown}}>
         <Hud />
-            {gridArr.map((item) => { return renderPad(item) })}
+            {rendercontent()}
         </div>
     )
 }

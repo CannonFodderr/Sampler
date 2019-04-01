@@ -10,6 +10,7 @@
     padding: 0.5vh 1vw;
     transition: 0.3s ease-in-out;
     cursor: pointer;
+    font-size: 1.2em;
 }
 .ctl-btn:hover{
     color: #F2EDEA;
