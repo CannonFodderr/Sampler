@@ -6,10 +6,22 @@
     display: grid;
     border: 1px solid black;
 }
+.hud-bottom{
+    display: flex;
+}
 .pad-name{
     margin: 0;
 }
 
 .ctl-item-wrapper{
     display: inline;
+    margin-right: 0.5vw;
+}
+.hud-input{
+    width: 5vw;
+}
+.hud-input::-webkit-inner-spin-button,
+.hud-input::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
 }

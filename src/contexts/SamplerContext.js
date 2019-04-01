@@ -7,7 +7,7 @@ class GridPad {
         this.isLoaded = false
         this.name = `Pad${id}`
         this.source = null
-        this.isPlaying = false
+        this.selfMuted = true
         this.sampleStart = 0
         this.sampleEnd = this.sampleStart + 2;
     }
@@ -48,7 +48,7 @@ export function SamplerContextStore(props) {
     const handlePadClick = (padId) => {
         let selectedSource =  state.sources[padId]
         if(selectedSource && selectedSource.buffer){
-            if(state.gridPadsArr[padId].source){
+            if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
                 state.gridPadsArr[padId].source.stop();
             }
             let newSource = state.ctx.createBufferSource();
