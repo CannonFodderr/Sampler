@@ -1,7 +1,6 @@
 .hud-wrapper{
     height: 10vh;
     background: #14ABBD;
-    /* padding: 0.5vh 1vw; */
     font-family: 'Orbitron', sans-serif;
     display: grid;
     grid-template-rows: 2fr 1fr;
