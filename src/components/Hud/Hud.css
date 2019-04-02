@@ -1,33 +1,9 @@
 .hud-wrapper{
     height: 10vh;
     background: #14ABBD;
-    padding: 0.5vh 1vw;
+    /* padding: 0.5vh 1vw; */
     font-family: 'Orbitron', sans-serif;
     display: grid;
     grid-template-rows: 2fr 1fr;
     border: 1px solid black;
-}
-.pad-name{
-    font-size: 100%;
-}
-
-.hud-top{
-    height: fit-content;
-}
-.hud-bottom{
-    display: flex;
-}
-.pad-name{
-    margin: 0;
-}
-
-.ctl-item-wrapper{
-    display: inline-flex;
-    margin-right: 1vw;
-    height: 100%;
-}
-.ctl-item{
-    font-size: 100%;
-    margin-right: 0.5vw;
-    padding: 1vh 1vw;
 }

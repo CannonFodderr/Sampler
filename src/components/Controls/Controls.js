@@ -8,7 +8,7 @@ const Controls = (props) => {
         let ext = file.name.split('.')[1]
         let validExt = /mp3|wav|m4a/.test(ext)
         if(!validExt) return console.log("Set err msg")
-        return context.updateGridPad(file)
+        return context.updateSources(file)
     }
     const renderFileInput = () => {
         const openFileSelector = (e) => {

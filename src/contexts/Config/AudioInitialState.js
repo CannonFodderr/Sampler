@@ -6,5 +6,6 @@ export default {
     gridPadsArr: [],
     editMode: false,
     sources: {},
-    selectedPad: 0
+    selectedPad: 0,
+    analyser: null
 }

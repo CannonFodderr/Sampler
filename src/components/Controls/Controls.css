@@ -1,3 +1,9 @@
+.controls-wrapper{
+    position: relative;
+    bottom: 0;
+    left: 0;
+    margin: 1vh 0;
+}
 .file-selector-wrapper{
     display: inline;
 }
@@ -6,7 +12,8 @@
     width: fit-content;
     border: 1px solid #0B0002;
     color: #F2EDEA;
-    background-color: #8C7D72;
+    /* background-color: #8C7D72; */
+    background-color: transparent;
     padding: 0.5vh 1vw;
     transition: 0.3s ease-in-out;
     cursor: pointer;

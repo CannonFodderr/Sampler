@@ -21,6 +21,11 @@ export function SamplerContextStore(props) {
         let ctx = !state.ctx ? new AudioContext() : null
         return setState({...state, ctx})
     }
+    const createAnalyser = () =>{
+        let analyser = state.ctx.createAnalyser();
+        analyser.connect(state.ctx.destination);
+        setState({...state, analyser});
+    }
     const generateGrid = () => {
         let gridPadsArr = []
         for(let i = 0; i < state.numPads; i++){
@@ -33,13 +38,14 @@ export function SamplerContextStore(props) {
         let editMode = !state.editMode;
         return setState({...state, editMode })
     }
-    const updateGridPad = (file) => {
+    const updateSources = (file) => {
         let reader = new FileReader();
         reader.onload = e => {
             state.ctx.decodeAudioData(e.target.result, (buffer) => {
                 let sourcesList = {...state.sources}
                 let name = file.name.split('.')[0]
-                sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false}
+                let waveformData = buffer.getChannelData(0)
+                sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false, waveformData}
                 setState({...state, sources: sourcesList})
             })
         }
@@ -80,13 +86,16 @@ export function SamplerContextStore(props) {
             setState({...state, gridPadsArr: newPadsArr});
         }
     }
-    useEffect(() => { if(state.gridPadsArr.length < 1) return generateGrid() })
-    console.log(state)
+    useEffect(() => { 
+        if(state.gridPadsArr.length < 1) generateGrid() 
+        if(state.ctx && !state.analyser) createAnalyser()
+    })
+    // console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,
         toggleEditMode,
-        updateGridPad,
+        updateSources,
         handlePadClick,
         clearSelectedPad,
         updateEditorData
