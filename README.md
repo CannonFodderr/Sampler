@@ -38,5 +38,5 @@ The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
 
 ## Contrib & Contact
-[Contact ME](https://idanprofile.herokuapp.com/)
-[View all my web development projects ](https://idanprofile.herokuapp.com/profile/1/projects)
+* [Contact ME](https://idanprofile.herokuapp.com/)
+* [View all my web development projects ](https://idanprofile.herokuapp.com/profile/1/projects)
