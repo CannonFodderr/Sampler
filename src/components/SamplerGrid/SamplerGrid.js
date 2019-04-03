@@ -29,7 +29,9 @@ const SamplerGrid = () => {
     return (
         <div className="grid-wrapper" style={{backgroundColor: Colors.brown}}>
         <Hud />
-            {rendercontent()}
+            <div className="grid">
+                {rendercontent()}
+            </div>
         </div>
     )
 }

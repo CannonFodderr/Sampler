@@ -18,15 +18,15 @@ export default () => {
         return(
             <div>
                 <div className="start-info">
-                    <p>Click on a pad then the gear icon to load / unload audio files.</p>
-                    <p><strong>only WAV/MP3 files are supported</strong></p>
+                    <p>Click on a pad then click the gear icon to load / unload audio files.</p>
+                    <p>only <strong>WAV/MP3</strong> files are supported</p>
                     <p>Loaded pads will play audio once clicked.</p> 
                     <p>MIDI & Keyboard support coming soon... :)</p>
                 </div>
                 <button 
                 className="start-btn"
                 onClick={() => { context.setCTX()}}
-                >ENJOY!</button>
+                >START</button>
             </div>
         )
     }
@@ -35,10 +35,17 @@ export default () => {
         <div className="start-wrapper" style={{backgroundColor: Colors.blue, color: Colors.black}}>
         <div className="content-container">
             <div style={{backgroundColor: Colors.white, padding: "1vh 2vw"}}>
-            <h1>React Sampler with <br/> Web Audio API</h1>
+            <h1>REACT SAMPLER <br/> with Web Audio API</h1>
             {displayContent()}
-            <h4><a href="https://github.com/CannonFodderr/Sampler" target="__blank">Fork me on GitHub</a></h4>
-            <h4>Made with <span style={{color: Colors.red, fontSize: "1.3rem"}}>♥</span> by <a href="https://idanprofile.herokuapp.com/profile/1/projects">Idan Izhaki</a></h4>
+            <div>
+                <h4>
+                    <a 
+                    className="start-links"
+                    href="https://github.com/CannonFodderr/Sampler" target="__blank">Fork me on GitHub</a>
+                </h4>
+                <h4>Made with <span style={{color: Colors.red, fontSize: "1.3rem"}}>♥</span> by <a className="start-links" href="https://idanprofile.herokuapp.com/profile/1/projects">Idan Izhaki</a>
+                </h4>
+            </div>
             </div>
         </div>            
         </div>

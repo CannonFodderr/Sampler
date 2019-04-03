@@ -5,7 +5,7 @@ import StartScreen from '../StartScreen/StartScreen';
 
 export default function App () {
     const context = useContext(Context);
-    const renderAppContext = () => {
+    const renderAppContent = () => {
         if(!context.ctx) return <StartScreen />
         return (
             <div>
@@ -15,7 +15,7 @@ export default function App () {
     }
     return(
         <div className="app-wrapper">
-            {renderAppContext()}
+            {renderAppContent()}
         </div>
     )
 }

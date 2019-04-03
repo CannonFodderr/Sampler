@@ -1,8 +1,8 @@
 .pad{
     box-sizing: border-box;
     width: 23%;
-    padding-bottom: 23%;
-    background-color: aqua;
+    padding-bottom: 16vh;
+    background-color: #14ABBD;
     border: 1px solid black;
     display: inline-block;
     cursor: pointer;

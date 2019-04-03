@@ -9,7 +9,7 @@ export default (props) => {
     return <div 
     className="pad" 
     id={props.id}
-    style={{backgroundColor: color}}
+    style={{backgroundColor: color, transition: "0.5s linear"}}
     onClick={() => {context.handlePadClick(props.id)}}
     >
     </div>
