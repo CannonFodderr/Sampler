@@ -10,16 +10,19 @@
 .ctl-btn{
     height: 100%;
     width: fit-content;
-    border: 1px solid #0B0002;
+    border: 1px solid #F2EDEA;
     color: #F2EDEA;
     background-color: transparent;
     padding: 0.5vh 1vw;
     transition: 0.3s ease-in-out;
     cursor: pointer;
     font-size: 1.2em;
+    font-weight: 800;
+    margin: 7vh 1vw 0vh 0vw;
+    outline: none;
 }
 .ctl-btn:hover{
     color: #F2EDEA;
-    background-color: #14ABBD;
+    background-color: #0B0002;
     border: 1px solid #0B0002;
 }

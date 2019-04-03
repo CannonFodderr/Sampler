@@ -40,7 +40,7 @@ export default () => {
             ref={canvasRef} 
             style={{backgroundColor: Colors.blue, width: "100%", height: "20vh", position: "absolute", left: 0}}
             />
-            <h5 style={{position: "relative", top: 0, margin: 0}} className="pad-name">{context.selectedPad + 1}: {selectedSource.name}</h5>
+            <h4 style={{position: "relative", top: 0, margin: 0}} className="pad-name">{context.selectedPad + 1}: {selectedSource.name}</h4>
             <Controls editToggleText={editToggleText} />
         </div>
 }

@@ -46,7 +46,9 @@ export function SamplerContextStore(props) {
                 let name = file.name.split('.')[0]
                 let waveformData = buffer.getChannelData(0)
                 sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false, waveformData}
-                setState({...state, sources: sourcesList})
+                let gridPadsArr = state.gridPadsArr;
+                gridPadsArr[state.selectedPad].sampleEnd = buffer.duration;
+                setState({...state, sources: sourcesList, gridPadsArr})
             })
         }
         reader.readAsArrayBuffer(file);
@@ -63,7 +65,7 @@ export function SamplerContextStore(props) {
             let newPadsArr = state.gridPadsArr;
             newPadsArr[padId].source = newSource;
             setState({...state, gridPadsArr: newPadsArr, selectedPad: padId})
-            state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart /100 , state.gridPadsArr[padId].sampleEnd);
+            state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart , state.gridPadsArr[padId].sampleEnd);
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd)
             ;
         } else {
