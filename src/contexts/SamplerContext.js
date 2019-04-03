@@ -20,7 +20,7 @@ export const Context = React.createContext();
 export function SamplerContextStore(props) {
     let [state, setState] = useState(INITIAL_STATE);
     const setCTX = async () => {
-        let ctx = !state.ctx ? new AudioContext() : null
+        let ctx = !state.ctx ? new (window.AudioContext || window.webkitAudioContext)() : null;
         createAnalyser(ctx)
     }
     const createAnalyser = (ctx) =>{
@@ -29,7 +29,7 @@ export function SamplerContextStore(props) {
         setState({...state, ctx, analyser})
     }
     const testForTouchDevice = () => {
-        return 'ontouchstart' in window
+        return 'ontouchstart' in window;
     }
     const generateGrid = () => {
         let gridPadsArr = []
@@ -40,10 +40,9 @@ export function SamplerContextStore(props) {
         }
         return setState({...state, gridPadsArr, touchEnabled})
     }
-    
     const toggleEditMode = () => {
         let editMode = !state.editMode;
-        return setState({...state, editMode })
+        return setState({...state, editMode });
     }
     const updateSources = (file) => {
         let reader = new FileReader();
