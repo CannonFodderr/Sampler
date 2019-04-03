@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import INITIAL_STATE from './Config/AudioInitialState';
+import keyCTRL from '../Config/keyboardControls';
 
 class GridPad {
     constructor({id}){
@@ -16,15 +17,16 @@ class GridPad {
 export const Context = React.createContext();
 
 export function SamplerContextStore(props) {
-    const [state, setState] = useState(INITIAL_STATE);
+    let [state, setState] = useState(INITIAL_STATE);
     const setCTX = async () => {
         let ctx = !state.ctx ? new AudioContext() : null
-        return setState({...state, ctx})
+        let analyser = createAnalyser(ctx)
+        setState({...state, ctx, analyser})
     }
-    const createAnalyser = () =>{
-        let analyser = state.ctx.createAnalyser();
-        analyser.connect(state.ctx.destination);
-        setState({...state, analyser});
+    const createAnalyser = (ctx) =>{
+        let analyser = ctx.createAnalyser();
+        analyser.connect(ctx.destination);
+        return analyser;
     }
     const generateGrid = () => {
         let gridPadsArr = []
@@ -34,6 +36,7 @@ export function SamplerContextStore(props) {
         }
         return setState({...state, gridPadsArr})
     }
+    
     const toggleEditMode = () => {
         let editMode = !state.editMode;
         return setState({...state, editMode })
@@ -53,7 +56,9 @@ export function SamplerContextStore(props) {
         }
         reader.readAsArrayBuffer(file);
     }
-    const handlePadClick = (padId) => {
+    const handlePadTrigger = (padId) => {
+        padId = Number(padId)
+        console.log(state);
         let selectedSource =  state.sources[padId]
         if(selectedSource && selectedSource.buffer){
             if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
@@ -64,10 +69,9 @@ export function SamplerContextStore(props) {
             newSource.connect(state.ctx.destination);
             let newPadsArr = state.gridPadsArr;
             newPadsArr[padId].source = newSource;
-            setState({...state, gridPadsArr: newPadsArr, selectedPad: padId})
+            setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
             state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart , state.gridPadsArr[padId].sampleEnd);
-            state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd)
-            ;
+            state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd);
         } else {
             setState({...state, selectedPad: padId});
         }
@@ -88,17 +92,39 @@ export function SamplerContextStore(props) {
             setState({...state, gridPadsArr: newPadsArr});
         }
     }
+    const handleKeyDown = (e) => {
+        if(!state.ctx) return
+        console.log("DOWN")
+        e.preventDefault();
+        e.stopPropagation();
+        let keyTrigger = keyCTRL[e.code];
+        if(keyTrigger && !keyTrigger.hold && !e.repeat){
+            keyCTRL[e.code].hold = true;
+            handlePadTrigger(keyTrigger.padId);
+        };
+    }
+    const handleKeyUp = (e) => {
+        if(!state.ctx) return
+        console.log("UP")
+        e.preventDefault();
+        e.stopPropagation();
+        let keyTrigger = keyCTRL[e.code];
+        if(keyTrigger && keyTrigger.hold){
+            keyCTRL[e.code].hold = false;
+        } 
+    }
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid() 
-        if(state.ctx && !state.analyser) createAnalyser()
-    })
+        window.addEventListener('keydown', (e) => { handleKeyDown(e)})
+        window.addEventListener('keyup', (e) => { handleKeyUp(e)})
+    }, [])
     // console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,
         toggleEditMode,
         updateSources,
-        handlePadClick,
+        handlePadTrigger,
         clearSelectedPad,
         updateEditorData
     }}>{props.children}</Context.Provider>

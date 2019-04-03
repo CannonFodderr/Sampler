@@ -21,13 +21,16 @@ const SamplerGrid = () => {
         name={item.name}
         backgroundColor={backgroundColor}
         />
-    }
+    }   
     const rendercontent = () => {
         if(!context.editMode) return <div>{gridArr.map((item) => { return renderPad(item) })}</div>
         return <PadEditor />
     }
     return (
-        <div className="grid-wrapper" style={{backgroundColor: Colors.brown}}>
+        <div 
+        className="grid-wrapper" 
+        style={{backgroundColor: Colors.brown}} 
+        >
         <Hud />
             <div className="grid">
                 {rendercontent()}
