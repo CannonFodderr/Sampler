@@ -59,7 +59,8 @@ export function SamplerContextStore(props) {
     const handlePadTrigger = (padId) => {
         padId = Number(padId)
         console.log(state);
-        let selectedSource =  state.sources[padId]
+        let selectedSource =  state.sources[padId];
+        let newPadsArr = state.gridPadsArr;
         if(selectedSource && selectedSource.buffer){
             if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
                 state.gridPadsArr[padId].source.stop();
@@ -67,13 +68,13 @@ export function SamplerContextStore(props) {
             let newSource = state.ctx.createBufferSource();
             newSource.buffer = state.sources[padId].buffer;
             newSource.connect(state.ctx.destination);
-            let newPadsArr = state.gridPadsArr;
             newPadsArr[padId].source = newSource;
             setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
             state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart , state.gridPadsArr[padId].sampleEnd);
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd);
         } else {
-            setState({...state, selectedPad: padId});
+            console.log("Else")
+            setState({...state, selectedPad: padId, gridPadsArr: newPadsArr});
         }
     }
     const clearSelectedPad = () => {
@@ -93,7 +94,6 @@ export function SamplerContextStore(props) {
         }
     }
     const handleKeyDown = (e) => {
-        if(!state.ctx) return
         console.log("DOWN")
         e.preventDefault();
         e.stopPropagation();
@@ -104,7 +104,6 @@ export function SamplerContextStore(props) {
         };
     }
     const handleKeyUp = (e) => {
-        if(!state.ctx) return
         console.log("UP")
         e.preventDefault();
         e.stopPropagation();
