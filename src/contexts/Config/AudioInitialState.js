@@ -7,5 +7,6 @@ export default {
     editMode: false,
     sources: {},
     selectedPad: 0,
-    analyser: null
+    analyser: null,
+    touchEnabled: false
 }

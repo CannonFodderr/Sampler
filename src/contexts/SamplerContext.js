@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import INITIAL_STATE from './Config/AudioInitialState';
 import keyCTRL from '../Config/keyboardControls';
+import touchCTRL from '../Config/touchControls';
 
 class GridPad {
     constructor({id}){
@@ -21,20 +22,23 @@ export function SamplerContextStore(props) {
     const setCTX = async () => {
         let ctx = !state.ctx ? new AudioContext() : null
         createAnalyser(ctx)
-    
     }
     const createAnalyser = (ctx) =>{
         let analyser = ctx.createAnalyser();
         analyser.connect(ctx.destination);
         setState({...state, ctx, analyser})
     }
+    const testForTouchDevice = () => {
+        return 'ontouchstart' in window
+    }
     const generateGrid = () => {
         let gridPadsArr = []
+        let touchEnabled = testForTouchDevice();
         for(let i = 0; i < state.numPads; i++){
             let newPad = new GridPad({id: i})
             gridPadsArr.push(newPad)
         }
-        return setState({...state, gridPadsArr})
+        return setState({...state, gridPadsArr, touchEnabled})
     }
     
     const toggleEditMode = () => {
@@ -90,6 +94,11 @@ export function SamplerContextStore(props) {
             setState({...state, gridPadsArr: newPadsArr});
         }
     }
+    const handleMouseClick = (padId) => {
+        if(!state.touchEnabled){
+            handlePadTrigger(padId)
+        }
+    }
     const handleKeyDown = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -107,6 +116,15 @@ export function SamplerContextStore(props) {
             keyCTRL[e.which].hold = false;
         } 
     }
+    const handleTouchStart = (padId) => {
+        if(!touchCTRL[padId].hold){
+            touchCTRL[padId].hold = true;
+            handlePadTrigger(padId);
+        }
+    }
+    const handleTouchEnd = (padId) => {
+        touchCTRL[padId].hold = false;
+    }
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
     })
@@ -118,8 +136,11 @@ export function SamplerContextStore(props) {
         handlePadTrigger,
         clearSelectedPad,
         updateEditorData,
+        handleMouseClick,
         handleKeyDown,
-        handleKeyUp
+        handleKeyUp,
+        handleTouchStart,
+        handleTouchEnd
     }}>{props.children}</Context.Provider>
 }
 
