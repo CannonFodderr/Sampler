@@ -13,7 +13,9 @@ MPC style Sample Player with React & Audio Context.
 * Keyboard & Midi play support.
 * Audio sample from microphone.
 * Audio sample from video html elements.
-* Export samples
+* Export samples.
+* Sample detune & playback speed.
+* Standalone Electron app.
 
 ## Available Scripts
 
@@ -34,3 +36,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.<br>
 Your app is ready to be deployed!
+
+## Contrib & Contact
+[Contact ME](https://idanprofile.herokuapp.com/)
+[View all my web development projects ](https://idanprofile.herokuapp.com/profile/1/projects)
