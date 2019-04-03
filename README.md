@@ -1,3 +1,5 @@
+![React Sampler with Web Audio API](https://res.cloudinary.com/dmt8y48cp/image/upload/v1554241216/cv/Sampler.png)
+
 # React Sampler with Web Audio API
 
 MPC style Sample Player with React & Audio Context.
