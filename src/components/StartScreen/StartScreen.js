@@ -20,8 +20,9 @@ export default () => {
                 <div className="start-info">
                     <p>Click on a pad then click the gear icon to load / unload audio files.</p>
                     <p>only <strong>WAV/MP3</strong> files are supported</p>
-                    <p>Loaded pads will play audio once clicked.</p> 
-                    <p>MIDI & Keyboard support coming soon... :)</p>
+                    <p>Loaded pads will play audio once clicked.</p>
+                    <p>Play with keys: 1- 4 | q - r | a - f | z - v</p>
+                    <p>MIDI support coming soon... :)</p>
                 </div>
                 <button 
                 className="start-btn"

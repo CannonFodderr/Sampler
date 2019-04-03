@@ -15,7 +15,10 @@ export default function App () {
         )
     }
     return(
-        <div className="app-wrapper">
+        <div className="app-wrapper" 
+        onKeyDown={(e) => {context.handleKeyDown(e)}} 
+        onKeyUp={(e) => {context.handleKeyUp(e)}}
+        tabIndex="0">
             {renderAppContent()}
         </div>
     )
