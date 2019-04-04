@@ -4,6 +4,8 @@
 
 MPC style Sample Player with React & Audio Context.
 
+Checkout the [Live demo](https://s3-eu-west-1.amazonaws.com/reactsampler/index.html) :)
+
 ## Current features
 
 * Loading & Playing WAV/MP3 files to buffer.
