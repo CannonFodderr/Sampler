@@ -8,13 +8,18 @@ MPC style Sample Player with React & Audio Context.
 
 * Loading & Playing WAV/MP3 files to buffer.
 * Selected Pad / Loaded Pad color indicators.
+* Test for touch enabled device to set mouse click vs touch controls.
 * Waveform rendering on HUD display with SVG.
+* **Pad Grid keyboard controls**
+    * | 1 - 4 |
+    * | Q - R |
+    * | A - F |
+    * | Z - V |
 
 ## Coming soon...
 
-* Keyboard & Midi play support.
-* Audio sample from microphone.
-* Audio sample from video html elements.
+* Midi support.
+* Audio sample from other sources (mic, line etc...).
 * Export samples.
 * Sample detune & playback speed.
 * Standalone Electron app.

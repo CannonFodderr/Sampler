@@ -18,10 +18,14 @@ export default () => {
         return(
             <div>
                 <div className="start-info">
-                    <p>Click on a pad then click the gear icon to load / unload audio files.</p>
-                    <p>only <strong>WAV/MP3</strong> files are supported</p>
-                    <p>Loaded pads will play audio once clicked.</p>
-                    <p>Play with keys: 1- 4 | q - r | a - f | z - v</p>
+                    <p>Click on a pad then click the gear icon to load / unload audio files. only <strong>WAV/MP3</strong> files are supported</p>
+                    <p>Loaded pads will play audio once clicked. Pad Grid keyboard controls:</p>
+                    <ul style={{listStyle:"none"}}>
+                        <li>1 - 4</li>
+                        <li>Q - R</li>
+                        <li>A - F</li>
+                        <li>Z - V</li>
+                    </ul>
                     <p>MIDI support coming soon... :)</p>
                 </div>
                 <button 
@@ -42,9 +46,7 @@ export default () => {
                 <h4>
                     <a 
                     className="start-links"
-                    href="https://github.com/CannonFodderr/Sampler" target="__blank">Fork me on GitHub</a>
-                </h4>
-                <h4>Made with <span style={{color: Colors.red, fontSize: "1.3rem"}}>♥</span> by <a className="start-links" href="https://idanprofile.herokuapp.com/profile/1/projects">Idan Izhaki</a>
+                    href="https://github.com/CannonFodderr/Sampler" target="__blank">Fork me on GitHub</a> Made with <span style={{color: Colors.red, fontSize: "1.3rem"}}>♥</span> by <a className="start-links" href="https://idanprofile.herokuapp.com/profile/1/projects">Idan Izhaki</a>
                 </h4>
             </div>
             </div>
