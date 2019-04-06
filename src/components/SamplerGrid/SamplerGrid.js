@@ -29,7 +29,7 @@ const SamplerGrid = () => {
     return (
         <div 
         className="grid-wrapper" 
-        style={{backgroundColor: Colors.brown}} 
+        style={{backgroundColor: Colors.black}} 
         >
         <Hud />
             <div className="grid">

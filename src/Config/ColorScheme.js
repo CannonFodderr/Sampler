@@ -1,14 +1,14 @@
 export default {
-    gray: "#8C7D72",
+    gray: "#8E8D92",
     white: "#F2EDEA",
-    black: "#0B0002",
+    black: "#131313",
     brown: "#593E2F",
     green: "#0BAB76",
-    red: "#E97275",
+    red: "#F5627A",
     yellow: "#FFAA00",
     purple: "#6E567F",
-    blue: "#318BA3",
-    lightblue: "#14ABBD",
+    blue: "#35519B",
+    lightblue: "#38A8CE",
     lightorange: "#FF6000",
     orange: "#FF3800"
 }
