@@ -60,7 +60,6 @@ export function SamplerContextStore(props) {
         reader.readAsArrayBuffer(file);
     }
     const handlePadTrigger = (padId) => {
-        console.log(padId)
         let selectedSource =  state.sources[padId];
         if(selectedSource && selectedSource.buffer){
             if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){

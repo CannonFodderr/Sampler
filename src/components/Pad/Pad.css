@@ -1,14 +1,24 @@
 .pad{
     box-sizing: border-box;
-    width: 23%;
+    width: 21%;
     padding-bottom: 16vh;
     background-color: #14ABBD;
-    border: 1px solid black;
+    /* border: 4px solid black; */
+    border-radius: 5%;
+    -webkit-box-shadow: 0px 0px 3px 4px rgba(169,71,210,0.3);
+    -moz-box-shadow: 0px 0px 3px 4px rgba(169,71,210,0.3);
+    box-shadow: 0px 0px 3px 4px rgba(169,71,210,0.3);
     display: inline-block;
     cursor: pointer;
-    margin: 1%;
+    margin: 2%;
+    box-sizing: border-box;
 }
 
 .pad:hover{
-    background-color: #E97275 !important;
+    /* background-color: #E97275 !important;
+    border: 4px solid #E97275; */
+    -webkit-box-shadow: 0px 0px 8px 4px rgba(169,71,210,1);
+    -moz-box-shadow: 0px 0px 8px 4px rgba(169,71,210,1);
+    box-shadow: 0px 0px 8px 4px rgba(169,71,210,1);
+    
 }

@@ -5,7 +5,7 @@ import './Pad.css';
 
 export default (props) => {
     const context = useContext(Context);
-    let color = props.id === context.selectedPad ? Colors.green : props.backgroundColor
+    let color = props.id === context.selectedPad ? Colors.purple : props.backgroundColor
     return <div 
     className="pad" 
     id={props.id}
