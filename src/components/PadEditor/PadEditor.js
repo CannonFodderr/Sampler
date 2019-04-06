@@ -10,6 +10,12 @@ export default () => {
         <div className="editor-wrapper">
             <PadEditorItem label="start" value={selectedPad.sampleStart}/>
             <PadEditorItem label="end" value={selectedPad.sampleEnd}/>
+            <PadEditorItem label="gain" value={1}/>
+            <PadEditorItem label="detune" value={0}/>
+            <PadEditorItem label="placeholder1" value={0}/>
+            <PadEditorItem label="placeholder2" value={0}/>
+            <PadEditorItem label="placeholder3" value={0}/>
+            <PadEditorItem label="placeholder4" value={0}/>
         </div>
     )
 }

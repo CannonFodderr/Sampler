@@ -16,6 +16,7 @@ export default function App () {
     }
     return(
         <div className="app-wrapper" 
+        style={{height: "100vh"}}
         onKeyDown={(e) => {context.handleKeyDown(e)}} 
         onKeyUp={(e) => {context.handleKeyUp(e)}}
         tabIndex="0">

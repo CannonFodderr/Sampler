@@ -10,7 +10,18 @@ const Controls = (props) => {
         if(!validExt) return console.log("Set err msg")
         return context.updateSources(file)
     }
-    const renderFileInput = () => {
+    const renderRecButton = () => {
+        if(context.editMode){
+            return(
+                <div className="file-selector-wrapper">
+                    <button
+                    className="ctl-btn"
+                    >REC</button>
+                </div>
+            )
+        }
+    }
+    const renderFileUpload = () => {
         const openFileSelector = (e) => {
             e.preventDefault();
             let fileSelector = document.getElementById("fileSelector");
@@ -30,18 +41,19 @@ const Controls = (props) => {
             </div>    
         )
     }
-    const renderFileLoadUnload = () => {
-        let currentPad = context.sources[context.selectedPad]
-        if(context.editMode && !currentPad) return renderFileInput()
+    const renderSourceLoadUnload = () => {
+        let currentPad = context.sources[context.selectedPad];
+        if(context.editMode && !currentPad) return renderFileUpload();
         if(context.editMode && currentPad.buffer) return <button className="ctl-btn" onClick={() => context.clearSelectedPad()}>Clear Sample</button>
-        if(currentPad && !currentPad.buffer) return renderFileInput()
+        if(currentPad && !currentPad.buffer) return renderFileUpload()
     }
     return (
         <div className="controls-wrapper">
             <button 
             className="ctl-btn" 
             onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
-            {renderFileLoadUnload()}
+            {renderSourceLoadUnload()}
+            {renderRecButton()}
         </div>
     )
 }

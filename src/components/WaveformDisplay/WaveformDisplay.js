@@ -1,7 +1,6 @@
 import React, {useContext, useRef, useEffect} from 'react';
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
-import Controls from '../Controls/Controls';
 
 export default () => {
     const context = useContext(Context);
@@ -32,7 +31,6 @@ export default () => {
     useEffect(() => {
             draw()
     })
-    let editToggleText = context.editMode ? '◄' : '☼';
     let selectedSource = context.sources[context.selectedPad] ? context.sources[context.selectedPad] : 'Empty'
     return <div>
             <canvas 
@@ -40,7 +38,6 @@ export default () => {
             ref={canvasRef} 
             style={{backgroundColor: Colors.blue, width: "100%", height: "20vh", position: "absolute", left: 0}}
             />
-            <h4 style={{position: "relative", top: 0, margin: 0}} className="pad-name">{context.selectedPad + 1}: {selectedSource.name}</h4>
-            <Controls editToggleText={editToggleText} />
+            <h4 style={{position: "relative", top: 0, margin: "1vh 1vw"}} className="pad-name">{context.selectedPad + 1}: {selectedSource.name}</h4>
         </div>
 }

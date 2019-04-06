@@ -60,6 +60,7 @@ export function SamplerContextStore(props) {
         reader.readAsArrayBuffer(file);
     }
     const handlePadTrigger = (padId) => {
+        console.log(padId)
         let selectedSource =  state.sources[padId];
         if(selectedSource && selectedSource.buffer){
             if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
@@ -85,11 +86,12 @@ export function SamplerContextStore(props) {
     const updateEditorData = ({cmd, val}) => {
         let newPadsArr = state.gridPadsArr;
         if(cmd === "start"){
-            newPadsArr[state.selectedPad].sampleStart = Number(val);
+            newPadsArr[state.selectedPad].sampleStart = Number(val / 100);
             setState({...state, gridPadsArr: newPadsArr});
         }
         if(cmd === "end"){
-            newPadsArr[state.selectedPad].sampleEnd = Number(val);
+            console.log(val)
+            newPadsArr[state.selectedPad].sampleEnd = Number(val / 100);
             setState({...state, gridPadsArr: newPadsArr});
         }
     }
