@@ -4,6 +4,5 @@
     font-family: 'Orbitron', sans-serif;
     display: grid;
     grid-template-rows: 2fr 1fr;
-    border: 1px solid black;
     padding: 0 1vw;
 }

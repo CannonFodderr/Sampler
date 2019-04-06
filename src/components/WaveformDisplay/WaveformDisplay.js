@@ -38,6 +38,6 @@ export default () => {
             ref={canvasRef} 
             style={{backgroundColor: Colors.blue, width: "100%", height: "20vh", position: "absolute", left: 0}}
             />
-            <h4 style={{position: "relative", top: 0, margin: "1vh 1vw"}} className="pad-name">{context.selectedPad + 1}: {selectedSource.name}</h4>
+            <h4 draggable={false} style={{position: "relative", top: 0, margin: "1vh 0vw"}} className="pad-name">{context.selectedPad + 1} : {selectedSource.name}</h4>
         </div>
 }
