@@ -11,7 +11,7 @@ class GridPad {
         this.name = `Pad${id}`;
         this.gainNode = null;
         this.source = null;
-        this.color = Colors.gray;
+        this.color = Colors.purple;
         this.selfMuted = true;
         this.sampleStart = 0;
         this.currentGain = 1;
@@ -58,10 +58,14 @@ export function SamplerContextStore(props) {
                 let waveformData = buffer.getChannelData(0)
                 sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false, waveformData}
                 let gridPadsArr = state.gridPadsArr;
+                let newSource = state.ctx.createBufferSource();
+                newSource.buffer = buffer;
+                gridPadsArr[state.selectedPad].source = newSource;
+                gridPadsArr[state.selectedPad].source.start()
                 gridPadsArr[state.selectedPad].sampleEnd = buffer.duration;
                 gridPadsArr[state.selectedPad].gainNode = state.ctx.createGain();
                 gridPadsArr[state.selectedPad].gainNode.connect(state.ctx.destination);
-                setState({...state, sources: sourcesList, gridPadsArr})
+                setState({...state, sources: sourcesList, gridPadsArr});
             })
         }
         reader.readAsArrayBuffer(file);
