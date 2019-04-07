@@ -13,7 +13,7 @@ const SamplerGrid = () => {
     const renderPad = (item) => {
         let backgroundColor = Colors.black
         let source = context.sources[item.id];
-        if(!context.editMode && source && source.buffer) backgroundColor = Colors.gray
+        if(!context.editMode && source && source.buffer) backgroundColor = context.gridPadsArr[context.selectedPad].color;
         if(context.editMode && source && source.buffer) backgroundColor = Colors.green
         return <Pad 
         key={item.id} 

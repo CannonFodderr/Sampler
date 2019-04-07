@@ -1,17 +1,22 @@
 import React, {useState, useEffect} from 'react';
 import INITIAL_STATE from './Config/AudioInitialState';
+import Colors from '../Config/ColorScheme';
 import keyCTRL from '../Config/keyboardControls';
 import touchCTRL from '../Config/touchControls';
 
 class GridPad {
     constructor({id}){
-        this.id = id
-        this.isLoaded = false
-        this.name = `Pad${id}`
-        this.source = null
-        this.selfMuted = true
-        this.sampleStart = 0
-        this.sampleEnd = this.sampleStart + 2;
+        this.id = id;
+        this.isLoaded = false;
+        this.name = `Pad${id}`;
+        this.gainNode = null;
+        this.source = null;
+        this.color = Colors.gray;
+        this.selfMuted = true;
+        this.sampleStart = 0;
+        this.currentGain = 1;
+        this.detune = 0;
+        this.sampleEnd = this.sampleStart;
     }
 }
 
@@ -54,6 +59,8 @@ export function SamplerContextStore(props) {
                 sourcesList[state.selectedPad] = {buffer: buffer, name, isPlaying: false, waveformData}
                 let gridPadsArr = state.gridPadsArr;
                 gridPadsArr[state.selectedPad].sampleEnd = buffer.duration;
+                gridPadsArr[state.selectedPad].gainNode = state.ctx.createGain();
+                gridPadsArr[state.selectedPad].gainNode.connect(state.ctx.destination);
                 setState({...state, sources: sourcesList, gridPadsArr})
             })
         }
@@ -68,9 +75,11 @@ export function SamplerContextStore(props) {
             let newPadsArr = state.gridPadsArr;
             let newSource = state.ctx.createBufferSource();
             newSource.buffer = state.sources[padId].buffer;
-            newSource.connect(state.ctx.destination);
             newPadsArr[padId].source = newSource;
             setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
+            newSource.connect(state.gridPadsArr[padId].gainNode);
+            newSource.detune.value = state.gridPadsArr[padId].detune;
+            state.gridPadsArr[padId].gainNode.gain.setValueAtTime(state.gridPadsArr[padId].currentGain, state.ctx.currentTime)
             state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart , state.gridPadsArr[padId].sampleEnd);
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd);
         } else {
@@ -85,13 +94,22 @@ export function SamplerContextStore(props) {
     const updateEditorData = ({cmd, val}) => {
         let newPadsArr = state.gridPadsArr;
         if(cmd === "start"){
-            newPadsArr[state.selectedPad].sampleStart = Number(val / 100);
+            if(val >= newPadsArr[state.selectedPad].sampleEnd) return;
+            newPadsArr[state.selectedPad].sampleStart = Number(val);
             setState({...state, gridPadsArr: newPadsArr});
         }
         if(cmd === "end"){
-            console.log(val)
-            newPadsArr[state.selectedPad].sampleEnd = Number(val / 100);
+            if(val <= newPadsArr[state.selectedPad].sampleStart) return;
+            newPadsArr[state.selectedPad].sampleEnd = Number(val);
             setState({...state, gridPadsArr: newPadsArr});
+        }
+        if(cmd === "gain"){
+            newPadsArr[state.selectedPad].currentGain = val;
+            setState({...state, gridPadsArr: newPadsArr})
+        }
+        if(cmd === "detune"){
+            newPadsArr[state.selectedPad].detune = val;
+            setState({...state, gridPadsArr: newPadsArr})
         }
     }
     const handleMouseClick = (padId) => {

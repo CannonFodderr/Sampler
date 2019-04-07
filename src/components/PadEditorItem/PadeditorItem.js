@@ -18,11 +18,6 @@ let style = {
 
 export default (props) => {
     const context = useContext(Context);
-    let duration = 0;
-    let source = context.gridPadsArr[context.selectedPad].source;
-    if(source && source.buffer ){
-        duration = source.buffer.duration;
-    }
     return (
         <div className="pad-item-wrapper" style={style}>
             <label htmlFor={props.label} 
@@ -31,10 +26,10 @@ export default (props) => {
             <input 
             type="range" 
             min={0} 
-            max={duration * 100} 
-            value={props.value * 100} 
+            max={props.max} 
+            value={props.value} 
             name={props.label} 
-            step={1}
+            step={props.step}
             id={props.label}
             onChange={(e) => { context.updateEditorData({cmd: props.label, val: e.target.value})}}/>
         </div>
