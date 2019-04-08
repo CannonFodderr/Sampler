@@ -12,6 +12,7 @@ class GridPad {
         this.gainNode = null;
         this.source = null;
         this.color = Colors.purple;
+        this.isPlaying = false;
         this.selfMuted = true;
         this.sampleStart = 0;
         this.currentGain = 1;
@@ -80,6 +81,7 @@ export function SamplerContextStore(props) {
             let newSource = state.ctx.createBufferSource();
             newSource.buffer = state.sources[padId].buffer;
             newPadsArr[padId].source = newSource;
+            newPadsArr[padId].isPlaying = true;
             setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
             newSource.connect(state.gridPadsArr[padId].gainNode);
             newSource.detune.value = state.gridPadsArr[padId].detune;
@@ -88,6 +90,13 @@ export function SamplerContextStore(props) {
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd);
         } else {
             setState({...state, selectedPad: padId});
+        }
+    }
+    const handlePadStop = (padId, newPadsArr) => {
+        if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
+            state.gridPadsArr[padId].source.stop();
+            state.gridPadsArr[padId].isPlaying = false
+            setState({...state, gridPadsArr: newPadsArr});
         }
     }
     const clearSelectedPad = () => {
@@ -114,6 +123,20 @@ export function SamplerContextStore(props) {
         if(cmd === "detune"){
             newPadsArr[state.selectedPad].detune = val;
             setState({...state, gridPadsArr: newPadsArr})
+        }
+        if(cmd === "prev"){
+            let selectedPad = state.selectedPad + val < 0 ? state.gridPadsArr.length - 1 : state.selectedPad + val;
+            setState({...state, selectedPad})
+        }
+        if(cmd === "next"){
+            let selectedPad = state.selectedPad + val > state.gridPadsArr.length - 1 ?  0 : state.selectedPad + val;
+            setState({...state, selectedPad})
+        }
+        if(cmd === "play"){
+            handlePadTrigger(state.selectedPad);
+        }
+        if(cmd === "stop"){
+            handlePadStop(state.selectedPad, newPadsArr);
         }
     }
     const handleMouseClick = (padId) => {
