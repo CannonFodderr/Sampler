@@ -120,7 +120,7 @@ export function SamplerContextStore(props) {
             newPadsArr[state.selectedPad].currentGain = val;
             setState({...state, gridPadsArr: newPadsArr})
         }
-        if(cmd === "detune"){
+        if(cmd === "detune" && val !== "Current"){
             newPadsArr[state.selectedPad].detune = val;
             setState({...state, gridPadsArr: newPadsArr})
         }
@@ -138,7 +138,12 @@ export function SamplerContextStore(props) {
         if(cmd === "stop"){
             handlePadStop(state.selectedPad, newPadsArr);
         }
+        if(cmd === "color"){
+            newPadsArr[state.selectedPad].color = Colors[val];
+            setState({...state, gridPadsArr: newPadsArr});
+        }
     }
+        
     const handleMouseClick = (padId) => {
         if(!state.touchEnabled){
             handlePadTrigger(padId)
