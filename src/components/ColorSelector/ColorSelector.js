@@ -21,7 +21,7 @@ export default () => {
         let colorNames = Object.keys(Colors);
         return colorNames.map((color) => {
             return (
-                <option id={color} key={color} style={{backgroundColor: Colors[color]}}></option>
+                <option id={color} key={color} style={{backgroundColor: Colors[color], color: Colors[color]}}>{color}</option>
             )
         })
     }
