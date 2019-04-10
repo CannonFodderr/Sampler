@@ -32,11 +32,12 @@ export default () => {
             draw()
     })
     let selectedSource = context.sources[context.selectedPad] ? context.sources[context.selectedPad] : 'Empty'
+    let backgroundColor = context.recMode ? Colors.red : Colors.blue;
     return <div>
             <canvas 
             id="waveformDisplay" 
             ref={canvasRef} 
-            style={{backgroundColor: Colors.blue, width: "100%", height: "20vh", position: "absolute", left: 0}}
+            style={{backgroundColor: backgroundColor, width: "100%", height: "20vh", position: "absolute", left: 0}}
             />
             <h4 draggable={false} style={{position: "relative", top: 0, margin: "1vh 0vw"}} className="pad-name">{context.selectedPad + 1} : {selectedSource.name}</h4>
         </div>

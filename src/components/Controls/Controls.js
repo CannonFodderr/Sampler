@@ -4,6 +4,7 @@ import {Context} from '../../contexts/SamplerContext';
 
 const Controls = (props) => {
     const context = useContext(Context);
+    let currentPad = context.gridPadsArr[context.selectedPad];
     const validateSelectedFile = (file) => {
         let ext = file.name.split('.')[1]
         let validExt = /mp3|wav|m4a/.test(ext)
@@ -11,14 +12,27 @@ const Controls = (props) => {
         return context.updateSources(file)
     }
     const renderRecButton = () => {
-        if(context.editMode){
-            return(
-                <div className="file-selector-wrapper">
-                    <button
-                    className="ctl-btn"
-                    >REC</button>
-                </div>
-            )
+        if(context.editMode && currentPad && !currentPad.source){
+            if(!context.recMode){
+                return(
+                    <div className="file-selector-wrapper">
+                        <button
+                        onClick={() => { context.toggleRecMode() }}
+                        className="ctl-btn"
+                        >REC</button>
+                    </div>
+                )
+            } else {
+                return(
+                    <div className="file-selector-wrapper">
+                        <button
+                        onClick={() => { context.toggleRecMode() }}
+                        className="ctl-btn"
+                        >EDIT</button>
+                    </div>
+                )
+            }
+            
         }
     }
     const renderFileUpload = () => {
@@ -42,10 +56,12 @@ const Controls = (props) => {
         )
     }
     const renderSourceLoadUnload = () => {
-        let currentPad = context.sources[context.selectedPad];
-        if(context.editMode && !currentPad) return renderFileUpload();
-        if(context.editMode && currentPad.buffer) return <button className="ctl-btn" onClick={() => context.clearSelectedPad()}>Clear Sample</button>
-        if(currentPad && !currentPad.buffer) return renderFileUpload()
+        // if(context.editMode && context.recMode) return;
+        if(context.editMode && currentPad && !currentPad.source) return renderFileUpload();
+        if(context.editMode && currentPad && currentPad.source) {
+            return <button className="ctl-btn" onClick={() => context.clearSelectedPad()}>UNLOAD</button>
+        }
+        if(context.editMode && currentPad && !currentPad.source) return renderFileUpload()
     }
     return (
         <div className="controls-wrapper">

@@ -16,15 +16,16 @@ let style = {
     margin: "1vh auto"
 }
 
-export default (props) => {
+export default ({cmd, content}) => {
     const context = useContext(Context);
     return (
         <div className="pad-item-wrapper" style={style}>
             <button
             className="editor-btn btn-play"
             id="next"
-            onClick={(e) => { context.updateEditorData({cmd: "play", val: "1"})}}>
-            ►
+            onClick={(e) => { context.updateEditorData({cmd: cmd, val: "1"})}}
+            >
+            {content}
             </button>
         </div>
     )

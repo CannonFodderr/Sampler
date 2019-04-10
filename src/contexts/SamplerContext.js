@@ -22,6 +22,8 @@ class GridPad {
 }
 
 export const Context = React.createContext();
+let recorder = null;
+let recordedChunks = [];
 
 export function SamplerContextStore(props) {
     let [state, setState] = useState(INITIAL_STATE);
@@ -48,7 +50,8 @@ export function SamplerContextStore(props) {
     }
     const toggleEditMode = () => {
         let editMode = !state.editMode;
-        return setState({...state, editMode });
+        let recMode = false;
+        return setState({...state, editMode, recMode });
     }
     const updateSources = (file) => {
         let reader = new FileReader();
@@ -102,10 +105,13 @@ export function SamplerContextStore(props) {
     const clearSelectedPad = () => {
         let sourcesList = {...state.sources}
         sourcesList[state.selectedPad] = {buffer: null, name: "", isPlaying: false}
-        setState({...state, sources: sourcesList})
+        let gridPadsArr = [...state.gridPadsArr];
+        gridPadsArr[state.selectedPad].source = null
+        setState({...state, sources: sourcesList, gridPadsArr})
     }
     const updateEditorData = ({cmd, val}) => {
         let newPadsArr = state.gridPadsArr;
+        console.log(cmd, val)
         if(cmd === "start"){
             if(val >= newPadsArr[state.selectedPad].sampleEnd) return;
             newPadsArr[state.selectedPad].sampleStart = Number(val);
@@ -142,6 +148,38 @@ export function SamplerContextStore(props) {
             newPadsArr[state.selectedPad].color = Colors[val];
             setState({...state, gridPadsArr: newPadsArr});
         }
+        if(cmd === "recStart"){
+            
+            navigator.mediaDevices.getUserMedia({audio: true, video: false})
+            .then(stream => {
+                let monitorStream = stream.clone()
+                let monSource = state.ctx.createMediaStreamSource(monitorStream);
+                monSource.connect(state.ctx.destination);
+                let recSource = state.ctx.createMediaStreamSource(stream);
+                let recDestination = state.ctx.createMediaStreamDestination();
+                recSource.connect(recDestination);
+                recorder = new MediaRecorder(recDestination.stream);
+                recorder.start()
+                recorder.onstop = () => {
+                    let recordedBlob = new Blob(recordedChunks, { 'type' : 'audio/ogg; codecs=opus' });
+                    recordedBlob.name = "sample record";
+                    recordedChunks = [];
+                    recorder = null;
+                    updateSources(recordedBlob)
+                }
+                recorder.ondataavailable  = (e) => {
+                    recordedChunks.push(e.data);
+                }
+                setState({...state, monitor: monSource});
+            })
+            .catch(err => console.log(err))
+        }
+        if(cmd === "recStop"){
+            recorder.stop();
+            state.monitor.disconnect();
+            console.log(recorder);
+            console.log(recordedChunks);
+        }
     }
         
     const handleMouseClick = (padId) => {
@@ -175,13 +213,23 @@ export function SamplerContextStore(props) {
     const handleTouchEnd = (padId) => {
         touchCTRL[padId].hold = false;
     }
+    const toggleRecMode = () => {
+        if(!state.recMode) {
+            setState({...state, recMode: true})
+        } else {
+            setState({...state, recMode: false});
+        }
+        
+    }
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
     })
+    // console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,
         toggleEditMode,
+        toggleRecMode,
         updateSources,
         handlePadTrigger,
         clearSelectedPad,

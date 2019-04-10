@@ -3,4 +3,6 @@
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr;
     height: 77vh;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.03em;
 }

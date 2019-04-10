@@ -16,6 +16,8 @@
     padding: 0.5vh 1vw;
     transition: 0.3s ease-in-out;
     cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.03em;
     font-size: 1.2em;
     font-weight: 800;
     margin: 1vh 1vw 0vh 0vw;
