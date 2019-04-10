@@ -13,7 +13,7 @@ let style = {
     gridTemplateRows: "1fr 1fr",
     gridTemplateColumns: "90%",
     justifyContent: "center",
-    margin: "1vh auto"
+    margin: "1vh auto",
 }
 
 export default (props) => {
@@ -22,7 +22,7 @@ export default (props) => {
         <div className="pad-item-wrapper" style={style}>
             <label htmlFor={props.label} 
             className="pad-item-label" 
-            style={{width: "100%", margin:"auto"}}>{props.label.toUpperCase()}: {props.value}</label>
+            style={{width: "100%", margin:"auto"}}>{props.label.toUpperCase()}: {Math.floor(props.value * 100) / 100}</label>
             <input 
             type="range" 
             min={0} 
