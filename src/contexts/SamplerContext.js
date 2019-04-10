@@ -111,7 +111,6 @@ export function SamplerContextStore(props) {
     }
     const updateEditorData = ({cmd, val}) => {
         let newPadsArr = state.gridPadsArr;
-        console.log(cmd, val)
         if(cmd === "start"){
             if(val >= newPadsArr[state.selectedPad].sampleEnd) return;
             newPadsArr[state.selectedPad].sampleStart = Number(val);
@@ -166,6 +165,12 @@ export function SamplerContextStore(props) {
                     recordedChunks = [];
                     recorder = null;
                     updateSources(recordedBlob)
+                    let monitorTracks = monitorStream.getAudioTracks();
+                    monitorTracks.forEach(track => track.stop());
+                    console.log(monitorTracks);
+                    let recTracks = stream.getAudioTracks();
+                    recTracks.forEach(track => track.stop());
+                    console.log(recTracks)
                 }
                 recorder.ondataavailable  = (e) => {
                     recordedChunks.push(e.data);
