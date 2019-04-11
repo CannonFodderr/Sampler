@@ -6,9 +6,10 @@ const Controls = (props) => {
     const context = useContext(Context);
     let currentPad = context.gridPadsArr[context.selectedPad];
     const validateSelectedFile = (file) => {
+        if(!file) return console.log("No file...")
         let ext = file.name.split('.')[1]
         let validExt = /mp3|wav|m4a/.test(ext)
-        if(!validExt) return console.log("Set err msg")
+        if(!validExt) return console.error("Unable to load selected file")
         return context.updateSources(file)
     }
     const renderRecButton = () => {

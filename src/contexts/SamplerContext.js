@@ -148,7 +148,6 @@ export function SamplerContextStore(props) {
             setState({...state, gridPadsArr: newPadsArr});
         }
         if(cmd === "recStart"){
-            
             navigator.mediaDevices.getUserMedia({audio: true, video: false})
             .then(stream => {
                 let monitorStream = stream.clone()
@@ -167,10 +166,8 @@ export function SamplerContextStore(props) {
                     updateSources(recordedBlob)
                     let monitorTracks = monitorStream.getAudioTracks();
                     monitorTracks.forEach(track => track.stop());
-                    console.log(monitorTracks);
                     let recTracks = stream.getAudioTracks();
                     recTracks.forEach(track => track.stop());
-                    console.log(recTracks)
                 }
                 recorder.ondataavailable  = (e) => {
                     recordedChunks.push(e.data);
@@ -182,8 +179,7 @@ export function SamplerContextStore(props) {
         if(cmd === "recStop"){
             recorder.stop();
             state.monitor.disconnect();
-            console.log(recorder);
-            console.log(recordedChunks);
+            setState({...state, monitor: null});
         }
     }
         
