@@ -1,29 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import INITIAL_STATE from './Config/AudioInitialState';
 import Colors from '../Config/ColorScheme';
+import GridPad from './Config/PadGrid';
 import keyCTRL from '../Config/keyboardControls';
 import touchCTRL from '../Config/touchControls';
 
-class GridPad {
-    constructor({id}){
-        this.id = id;
-        this.isLoaded = false;
-        this.name = `Pad${id}`;
-        this.gainNode = null;
-        this.source = null;
-        this.color = Colors.purple;
-        this.isPlaying = false;
-        this.selfMuted = true;
-        this.sampleStart = 0;
-        this.currentGain = 1;
-        this.detune = 0;
-        this.sampleEnd = this.sampleStart;
-    }
-}
-
 export const Context = React.createContext();
-let recorder = null;
-let recordedChunks = [];
 
 export function SamplerContextStore(props) {
     let [state, setState] = useState(INITIAL_STATE);
@@ -147,42 +129,7 @@ export function SamplerContextStore(props) {
             newPadsArr[state.selectedPad].color = Colors[val];
             setState({...state, gridPadsArr: newPadsArr});
         }
-        if(cmd === "recStart"){
-            navigator.mediaDevices.getUserMedia({audio: true, video: false})
-            .then(stream => {
-                let monitorStream = stream.clone()
-                let monSource = state.ctx.createMediaStreamSource(monitorStream);
-                monSource.connect(state.ctx.destination);
-                let recSource = state.ctx.createMediaStreamSource(stream);
-                let recDestination = state.ctx.createMediaStreamDestination();
-                recSource.connect(recDestination);
-                recorder = new MediaRecorder(recDestination.stream);
-                recorder.start()
-                recorder.onstop = () => {
-                    let recordedBlob = new Blob(recordedChunks, { 'type' : 'audio/ogg; codecs=opus' });
-                    recordedBlob.name = "sample record";
-                    recordedChunks = [];
-                    recorder = null;
-                    updateSources(recordedBlob)
-                    let monitorTracks = monitorStream.getAudioTracks();
-                    monitorTracks.forEach(track => track.stop());
-                    let recTracks = stream.getAudioTracks();
-                    recTracks.forEach(track => track.stop());
-                }
-                recorder.ondataavailable  = (e) => {
-                    recordedChunks.push(e.data);
-                }
-                setState({...state, monitor: monSource});
-            })
-            .catch(err => console.log(err))
-        }
-        if(cmd === "recStop"){
-            recorder.stop();
-            state.monitor.disconnect();
-            setState({...state, monitor: null});
-        }
     }
-        
     const handleMouseClick = (padId) => {
         if(!state.touchEnabled){
             handlePadTrigger(padId)
@@ -219,9 +166,22 @@ export function SamplerContextStore(props) {
             setState({...state, recMode: true})
         } else {
             setState({...state, recMode: false});
-        }
-        
+        }  
     }
+    const toggleIsRecording = (monitor) => {
+        setState({...state, isRecording: !state.isRecording, monitor });
+    }
+    const toggleDirectMonitor = () => {
+        if(!state.monitor) return;
+        let isMonitoring = !state.isMonitoring
+        if(isMonitoring){
+            state.monitor.connect(state.ctx.destination);
+            setState({...state, isMonitoring});
+        } else {
+            state.monitor.disconnect();
+            setState({...state, isMonitoring});
+        }
+    }    
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
     })
@@ -231,6 +191,8 @@ export function SamplerContextStore(props) {
         setCTX,
         toggleEditMode,
         toggleRecMode,
+        toggleIsRecording,
+        toggleDirectMonitor,
         updateSources,
         handlePadTrigger,
         clearSelectedPad,
@@ -239,7 +201,7 @@ export function SamplerContextStore(props) {
         handleKeyDown,
         handleKeyUp,
         handleTouchStart,
-        handleTouchEnd
+        handleTouchEnd,
     }}>{props.children}</Context.Provider>
 }
 
