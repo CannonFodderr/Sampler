@@ -32,7 +32,7 @@ export default () => {
             draw()
     })
     let selectedSource = context.sources[context.selectedPad] ? context.sources[context.selectedPad] : 'Empty'
-    let backgroundColor = context.recMode ? Colors.red : Colors.blue;
+    let backgroundColor = context.isRecording ? Colors.red : Colors.blue;
     return <div>
             <canvas 
             id="waveformDisplay" 

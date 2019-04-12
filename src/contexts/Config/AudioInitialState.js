@@ -6,10 +6,12 @@ export default {
     currentbank: 1,
     gridPadsArr: [],
     editMode: false,
-    recMode: false,
     sources: {},
     selectedPad: 0,
     analyser: null,
+    recMode: false,
+    isRecording: false,
+    isMonitoring: true,
     recorder: null,
     monitor: null
 }

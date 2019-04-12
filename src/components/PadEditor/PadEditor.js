@@ -3,6 +3,8 @@ import {Context} from '../../contexts/SamplerContext';
 import EditorItemRange from '../PadEditorItem/EditorItemRange';
 import EditorItemButtons from '../PadEditorItem/EditorItemButtons';
 import EditorItemButton from '../PadEditorItem/EditorItemButton';
+import RecordButton from '../PadEditorItem/RecordButton';
+import MonitorButton from '../PadEditorItem/MonitorButton';
 import ColorSelector from '../ColorSelector/ColorSelector';
 
 import './PadEditor.css';
@@ -20,8 +22,9 @@ export default () => {
             <div className="editor-wrapper">
                 <EditorItemButtons cmd1="prev" cmd2="next" content1="◄" content2="►" val1={-1} val2={1}/>
                 <EditorItemButton cmd="play" content="►"/>
-                <EditorItemButton cmd="recStart" content="REC"/>
-                <EditorItemButton cmd="recStop" content="MUTE"/>
+                <RecordButton />
+                <MonitorButton />
+                
             </div>
         )
     } else {
