@@ -28,3 +28,28 @@
     background-color: #0B0002;
     border: 1px solid #0B0002;
 }
+
+.ctl-select-wrapper{
+    display: inline;
+    border: 1px solid #F2EDEA;
+    color: #F2EDEA;
+    background-color: transparent;
+    padding: 0.5vh 1vw;
+    transition: 0.3s ease-in-out;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.03em;
+    margin: 1vh 1vw 0vh 0vw;
+    outline: none;
+}
+
+.ctl-select{
+    width: 30%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    text-transform: uppercase;
+    font-size: 1em;
+    overflow: hidden;
+
+}

@@ -1,5 +1,8 @@
 export default {
     touchEnabled: false,
+    midiEnabled: false,
+    midiInputs: null,
+    midiChannel: 10,
     ctx: null,
     numPads: 16,
     banks: 4,

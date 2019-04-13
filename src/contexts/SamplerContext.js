@@ -21,14 +21,21 @@ export function SamplerContextStore(props) {
     const testForTouchDevice = () => {
         return 'ontouchstart' in window;
     }
+    const testForMidiAPI = () => {
+        return "requestMIDIAccess" in navigator;
+    }
+    const setMidiInputs = (midiInputs) => {
+        setState({...state, midiInputs})
+    }
     const generateGrid = () => {
-        let gridPadsArr = []
+        let gridPadsArr = [];
         let touchEnabled = testForTouchDevice();
+        let midiEnabled = testForMidiAPI();
         for(let i = 0; i < state.numPads; i++){
             let newPad = new GridPad({id: i})
             gridPadsArr.push(newPad)
         }
-        return setState({...state, gridPadsArr, touchEnabled})
+        return setState({...state, gridPadsArr, touchEnabled, midiEnabled})
     }
     const toggleEditMode = () => {
         let editMode = !state.editMode;
@@ -56,7 +63,7 @@ export function SamplerContextStore(props) {
         }
         reader.readAsArrayBuffer(file);
     }
-    const handlePadTrigger = (padId) => {
+    const handlePadTrigger = (padId, velocity = 127) => {
         let selectedSource =  state.sources[padId];
         if(selectedSource && selectedSource.buffer){
             if(state.gridPadsArr[padId].source && state.gridPadsArr[padId].selfMuted){
@@ -67,14 +74,19 @@ export function SamplerContextStore(props) {
             newSource.buffer = state.sources[padId].buffer;
             newPadsArr[padId].source = newSource;
             newPadsArr[padId].isPlaying = true;
-            setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
+            if(state.selectedPad !== padId){
+                setState({...state, gridPadsArr: newPadsArr, selectedPad: padId});
+            }
             newSource.connect(state.gridPadsArr[padId].gainNode);
             newSource.detune.value = state.gridPadsArr[padId].detune;
-            state.gridPadsArr[padId].gainNode.gain.setValueAtTime(state.gridPadsArr[padId].currentGain, state.ctx.currentTime)
+            let currentGain = velocity !== 127 ? Math.pow(velocity, 2) / Math.pow(127, 2) : state.gridPadsArr[padId].currentGain;
+            state.gridPadsArr[padId].gainNode.gain.setValueAtTime(currentGain, state.ctx.currentTime)
             state.gridPadsArr[padId].source.start(state.ctx.currentTime, state.gridPadsArr[padId].sampleStart , state.gridPadsArr[padId].sampleEnd);
             state.gridPadsArr[padId].source.stop(state.ctx.currentTime + state.gridPadsArr[padId].sampleEnd);
         } else {
-            setState({...state, selectedPad: padId});
+            if(state.selectedPad !== padId){
+                setState({...state, selectedPad: padId});
+            }
         }
     }
     const handlePadStop = (padId, newPadsArr) => {
@@ -184,8 +196,8 @@ export function SamplerContextStore(props) {
     }    
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
-    })
-    // console.log(state)
+    });
+    console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,
@@ -202,6 +214,7 @@ export function SamplerContextStore(props) {
         handleKeyUp,
         handleTouchStart,
         handleTouchEnd,
+        setMidiInputs,
     }}>{props.children}</Context.Provider>
 }
 

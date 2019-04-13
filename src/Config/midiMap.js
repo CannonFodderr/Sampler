@@ -1,0 +1,18 @@
+export default {
+    36: {padId: 12, hold: false, type: "pad"},
+    37: {padId: 13, hold: false, type: "pad"},
+    38: {padId: 14, hold: false, type: "pad"},
+    39: {padId: 15, hold: false, type: "pad"},
+    40: {padId: 8, hold: false, type: "pad"},
+    41: {padId: 9, hold: false, type: "pad"},
+    42: {padId: 10, hold: false, type: "pad"},
+    43: {padId: 11, hold: false, type: "pad"},
+    44: {padId: 4, hold: false, type: "pad"},
+    45: {padId: 5, hold: false, type: "pad"},
+    46: {padId: 6, hold: false, type: "pad"},
+    47: {padId: 7, hold: false, type: "pad"},
+    48: {padId: 0, hold: false, type: "pad"},
+    49: {padId: 1, hold: false, type: "pad"},
+    50: {padId: 2, hold: false, type: "pad"},
+    51: {padId: 3, hold: false, type: "pad"},
+}

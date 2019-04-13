@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import './Controls.css';
 import {Context} from '../../contexts/SamplerContext';
+import MidiControls from '../MidiControls/MidiControls';
 
 const Controls = (props) => {
     const context = useContext(Context);
@@ -71,6 +72,7 @@ const Controls = (props) => {
             onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
             {renderSourceLoadUnload()}
             {renderRecButton()}
+            <MidiControls />
         </div>
     )
 }
