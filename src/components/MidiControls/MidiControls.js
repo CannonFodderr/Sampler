@@ -39,14 +39,33 @@ export default (props) => {
         if(context.midiEnabled && !context.midiInputs) return getMidiDevices();
             context.midiInputs.forEach(input => {
                 input.onmidimessage = (e) => {
-                    console.log(e);
+                    // console.log(e);
                     let cmd = e.data[0];
                     let note = e.data[1];
                     let velocity = e.data[2];
                     if(!midiMap[note]) return
-                    // midiMap[note].hold = !midiMap[note].hold;
-                    if(midiMap[note].type === "pad" && cmd - context.midiChannel === 144){
+                    if(midiMap[note].cc === "note" && cmd - context.midiChannel === 144){
                         context.handlePadTrigger(midiMap[note].padId, velocity)
+                    }
+                    if(midiMap[note].cc === "gain"){
+                        let gain = Math.pow(velocity, 2) / Math.pow(127, 2);
+                        context.updateEditorData({cmd: "gain", val: gain});
+                    }
+                    if(midiMap[note].cc === "detune"){
+                        let detune = Math.round(Math.pow(velocity, 2) / Math.pow(127, 2) * Math.pow(10, 3));
+                        context.updateEditorData({cmd: "detune", val: detune});
+                    }
+                    if(midiMap[note].cc === "sampleStart"){
+                        let sourceAvailable = context.gridPadsArr[context.selectedPad].source
+                        if(!sourceAvailable || !sourceAvailable.buffer) return
+                        let start = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
+                        context.updateEditorData({cmd: "start", val: start});
+                    }
+                    if(midiMap[note].cc === "sampleEnd"){
+                        let sourceAvailable = context.gridPadsArr[context.selectedPad].source
+                        if(!sourceAvailable || !sourceAvailable.buffer) return
+                        let end = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
+                        context.updateEditorData({cmd: "end", val: end});
                     }
                 }
             });

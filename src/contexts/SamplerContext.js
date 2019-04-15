@@ -197,7 +197,7 @@ export function SamplerContextStore(props) {
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
     });
-    console.log(state)
+    // console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,
