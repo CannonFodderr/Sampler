@@ -9,10 +9,11 @@ export default (props) => {
     const renderSelectOptions = () => {
         if(!context.midiInputs) return 
         else return context.midiInputs.map(input => {
-            return <option key={input.id} id={input.id}>{input.name}</option>
+            return <option key={input.id} id={input.id}>🎹 {input.name}</option>
         })
     }
     const renderMidiDeviceSelector = () => {
+        if(!context.midiInputs) return "🚫🎹"
         return(
             <select className="ctl-select" style={{color: Colors.white}}>
                 {renderSelectOptions()}
@@ -69,7 +70,7 @@ export default (props) => {
                     }
                 }
             });
-    });
+    }, [context.midiInputs]);
 
     return (
         <div className="ctl-select-wrapper">

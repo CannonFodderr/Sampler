@@ -65,6 +65,9 @@ const Controls = (props) => {
         }
         if(context.editMode && currentPad && !currentPad.source) return renderFileUpload()
     }
+    const renderMidiControls = () => {
+        return <MidiControls />
+    }
     return (
         <div className="controls-wrapper">
             <button 
@@ -72,7 +75,7 @@ const Controls = (props) => {
             onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
             {renderSourceLoadUnload()}
             {renderRecButton()}
-            <MidiControls />
+            {renderMidiControls()}
         </div>
     )
 }

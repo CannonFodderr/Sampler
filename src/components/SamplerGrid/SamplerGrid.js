@@ -4,8 +4,8 @@ import Colors from '../../Config/ColorScheme';
 import Hud from '../Hud/Hud';
 import PadEditor from '../PadEditor/PadEditor';
 import Pad from '../Pad/Pad';
+import midiMap from '../../Config/midiMap';
 import './SamplerGrid.css';
-
 
 const SamplerGrid = () => {
     const context = useContext(Context);
@@ -13,9 +13,11 @@ const SamplerGrid = () => {
     const renderPad = (item) => {
         let backgroundColor = Colors.black
         let source = context.sources[item.id];
+        const midiNote = midiMap[item.id + 36].note
         if(!context.editMode && source && source.buffer) backgroundColor = context.gridPadsArr[context.selectedPad].color;
         if(context.editMode && source && source.buffer) backgroundColor = Colors.green;
         return <Pad 
+        midiNote={midiNote}
         key={item.id} 
         id={item.id} 
         name={item.name}
