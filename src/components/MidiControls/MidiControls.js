@@ -6,10 +6,12 @@ import midiMap from '../../Config/midiMap';
 
 export default (props) => {
     let context = useContext(Context);
+    
+    console.log(context.midiInputs)
     const renderSelectOptions = () => {
         if(!context.midiInputs) return 
         else return context.midiInputs.map(input => {
-            return <option key={input.id} id={input.id}><span className="disable-text-select" role="img" aria-label="midi">"🎹"</span> {input.name}</option>
+            return <option key={input.id} id={input.id}>{input.name}</option>
         })
     }
     const renderMidiDeviceSelector = () => {
@@ -19,6 +21,40 @@ export default (props) => {
                 {renderSelectOptions()}
             </select>
         )
+    }
+    const addMidiListeners = () => {
+        context.midiInputs.forEach(input => {
+            input.onmidimessage = (e) => {
+                console.log(e);
+                let cmd = e.data[0];
+                let note = e.data[1];
+                let velocity = e.data[2];
+                if(!midiMap[note]) return
+                if(midiMap[note].cc === "note" && cmd - context.midiChannel === 144){
+                    context.handlePadTrigger(midiMap[note].padId, velocity)
+                }
+                if(midiMap[note].cc === "gain"){
+                    let gain = Math.pow(velocity, 2) / Math.pow(127, 2);
+                    context.updateEditorData({cmd: "gain", val: gain});
+                }
+                if(midiMap[note].cc === "detune"){
+                    let detune = Math.round(Math.pow(velocity, 2) / Math.pow(127, 2) * Math.pow(10, 3));
+                    context.updateEditorData({cmd: "detune", val: detune});
+                }
+                if(midiMap[note].cc === "sampleStart"){
+                    let sourceAvailable = context.gridPadsArr[context.selectedPad].source
+                    if(!sourceAvailable || !sourceAvailable.buffer) return
+                    let start = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
+                    context.updateEditorData({cmd: "start", val: start});
+                }
+                if(midiMap[note].cc === "sampleEnd"){
+                    let sourceAvailable = context.gridPadsArr[context.selectedPad].source
+                    if(!sourceAvailable || !sourceAvailable.buffer) return
+                    let end = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
+                    context.updateEditorData({cmd: "end", val: end});
+                }
+            }
+        });
     }
     const getMidiDevices = () => {
         navigator.requestMIDIAccess()
@@ -37,41 +73,11 @@ export default (props) => {
     }
 
     useEffect(() => {
-        if(context.midiEnabled || !context.midiInputs) return getMidiDevices();
-            context.midiInputs.forEach(input => {
-                input.onmidimessage = (e) => {
-                    // console.log(e);
-                    let cmd = e.data[0];
-                    let note = e.data[1];
-                    let velocity = e.data[2];
-                    if(!midiMap[note]) return
-                    if(midiMap[note].cc === "note" && cmd - context.midiChannel === 144){
-                        context.handlePadTrigger(midiMap[note].padId, velocity)
-                    }
-                    if(midiMap[note].cc === "gain"){
-                        let gain = Math.pow(velocity, 2) / Math.pow(127, 2);
-                        context.updateEditorData({cmd: "gain", val: gain});
-                    }
-                    if(midiMap[note].cc === "detune"){
-                        let detune = Math.round(Math.pow(velocity, 2) / Math.pow(127, 2) * Math.pow(10, 3));
-                        context.updateEditorData({cmd: "detune", val: detune});
-                    }
-                    if(midiMap[note].cc === "sampleStart"){
-                        let sourceAvailable = context.gridPadsArr[context.selectedPad].source
-                        if(!sourceAvailable || !sourceAvailable.buffer) return
-                        let start = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
-                        context.updateEditorData({cmd: "start", val: start});
-                    }
-                    if(midiMap[note].cc === "sampleEnd"){
-                        let sourceAvailable = context.gridPadsArr[context.selectedPad].source
-                        if(!sourceAvailable || !sourceAvailable.buffer) return
-                        let end = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
-                        context.updateEditorData({cmd: "end", val: end});
-                    }
-                }
-            });
-    }, [context.midiInputs]);
-
+        if(context.midiEnabled || !context.midiInputs) getMidiDevices();
+        if(!context.midiInputs) return
+            
+    }, []);
+    if(context.midiInputs) addMidiListeners()
     return (
         <div className="ctl-select-wrapper">
             {renderMidiDeviceSelector()}
