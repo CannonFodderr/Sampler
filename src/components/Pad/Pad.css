@@ -17,3 +17,10 @@
     -moz-box-shadow: 0px 0px 8px 4px rgba(169,71,210,1) !important;
     box-shadow: 0px 0px 8px 4px rgba(169,71,210,1) !important;    
 }
+
+.pad-text{
+    -ms-user-select: none; /* Internet Explorer */
+    -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none; /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+}

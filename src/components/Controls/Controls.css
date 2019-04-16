@@ -14,7 +14,7 @@
     color: #F2EDEA;
     background-color: transparent;
     padding: 0.5vh 1vw;
-    transition: 0.3s ease-in-out;
+    transition: 0.6s ease-in-out;
     cursor: pointer;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 0.03em;
@@ -22,6 +22,10 @@
     font-weight: 800;
     margin: 0vh 1vw 0vh 0vw;
     outline: none;
+    -ms-user-select: none; /* Internet Explorer */
+    -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none; /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }
 .ctl-btn:hover{
     color: #0B0002;
@@ -55,4 +59,11 @@
     text-transform: uppercase;
     font-size: 1em;
     overflow: hidden;
+}
+
+.disable-text-select{
+    -ms-user-select: none; /* Internet Explorer */
+    -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none; /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }

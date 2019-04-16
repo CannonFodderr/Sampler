@@ -66,6 +66,7 @@ const Controls = (props) => {
         if(context.editMode && currentPad && !currentPad.source) return renderFileUpload()
     }
     const renderMidiControls = () => {
+        if(!context.midiEnabled) return
         return <MidiControls />
     }
     return (

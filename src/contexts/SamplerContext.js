@@ -28,9 +28,9 @@ export function SamplerContextStore(props) {
         setState({...state, midiInputs})
     }
     const generateGrid = () => {
-        let gridPadsArr = [];
-        let touchEnabled = testForTouchDevice();
         let midiEnabled = testForMidiAPI();
+        let touchEnabled = testForTouchDevice();
+        let gridPadsArr = [];
         for(let i = 0; i < state.numPads; i++){
             let newPad = new GridPad({id: i})
             gridPadsArr.push(newPad)
@@ -197,7 +197,7 @@ export function SamplerContextStore(props) {
     useEffect(() => { 
         if(state.gridPadsArr.length < 1) generateGrid();
     });
-    console.log(state)
+    // console.log(state)
     return <Context.Provider value={{
         ...state, 
         setCTX,

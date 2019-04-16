@@ -21,7 +21,7 @@ export default (props) => {
     return (
         <div className="pad-item-wrapper" style={style}>
             <label htmlFor={props.label} 
-            className="pad-item-label" 
+            className="pad-item-label pad-text" 
             style={{width: "100%", margin:"auto"}}>{props.label.toUpperCase()}: {Math.floor(props.value * 100) / 100}</label>
             <input 
             type="range" 
