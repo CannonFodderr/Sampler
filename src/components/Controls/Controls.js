@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import './Controls.css';
 import {Context} from '../../contexts/SamplerContext';
+import MidiControls from '../MidiControls/MidiControls';
 
 const Controls = (props) => {
     const context = useContext(Context);
@@ -64,6 +65,10 @@ const Controls = (props) => {
         }
         if(context.editMode && currentPad && !currentPad.source) return renderFileUpload()
     }
+    const renderMidiControls = () => {
+        if(!context.midiEnabled) return
+        return <MidiControls />
+    }
     return (
         <div className="controls-wrapper">
             <button 
@@ -71,6 +76,7 @@ const Controls = (props) => {
             onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
             {renderSourceLoadUnload()}
             {renderRecButton()}
+            {renderMidiControls()}
         </div>
     )
 }

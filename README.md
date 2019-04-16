@@ -9,9 +9,13 @@ Checkout the [Live demo](https://s3-eu-west-1.amazonaws.com/reactsampler/index.h
 ## Current features
 
 * Loading & Playing WAV/MP3 files to buffer.
+* Audio recording from default audio Input.
+* Sample detuneing & Gain Control.
+* Sample start/end adjustments.
 * Selected Pad / Loaded Pad color indicators.
 * Test for touch enabled device to set mouse click vs touch controls.
 * Waveform rendering on HUD display with SVG.
+* Basic **MIDI Support** for playing pads and adjusting controls.
 * **Pad Grid keyboard controls**
     * | 1 - 4 |
     * | Q - R |
@@ -20,10 +24,11 @@ Checkout the [Live demo](https://s3-eu-west-1.amazonaws.com/reactsampler/index.h
 
 ## Coming soon...
 
-* Midi support.
-* Audio sample from other sources (mic, line etc...).
+* Advanced Midi support with octaves & MIDI Learn.
+* Advanced Audio sampling.
 * Export samples.
-* Sample detune & playback speed.
+* Adjust Sample playback speed.
+* Reverse Samples.
 * Standalone Electron app.
 
 ## Available Scripts

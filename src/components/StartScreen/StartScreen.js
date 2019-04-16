@@ -18,15 +18,17 @@ export default () => {
         return(
             <div>
                 <div className="start-info">
-                    <p>Click on a pad then click the gear icon to load / unload audio files. only <strong>WAV/MP3</strong> files are supported</p>
-                    <p>Loaded pads will play audio once clicked. Pad Grid keyboard controls:</p>
+                    <p><strong>LOAD:</strong> WAV/MP3 files</p>
+                    <p><strong>RECORD:</strong> from default input</p>
+                    <p>Basic <strong>MIDI SUPPORT:</strong> on Chromium based browsers</p>
+                    <p><strong>KEYBOARD CONTROLS:</strong></p>
                     <ul style={{listStyle:"none"}}>
                         <li>1 - 4</li>
                         <li>Q - R</li>
                         <li>A - F</li>
                         <li>Z - V</li>
                     </ul>
-                    <p>MIDI support coming soon... :)</p>
+                    <p>New features incoming soon...</p>
                 </div>
                 <button 
                 className="start-btn"

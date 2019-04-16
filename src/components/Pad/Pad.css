@@ -1,7 +1,9 @@
 .pad{
     box-sizing: border-box;
     width: 21%;
-    padding-bottom: 16vh;
+    padding: 1vh 1vw 10vh 1vw;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.03em;
     background-color: #14ABBD;
     border-radius: 5%;
     display: inline-block;
@@ -14,4 +16,11 @@
     -webkit-box-shadow: 0px 0px 8px 4px rgba(169,71,210,1) !important;
     -moz-box-shadow: 0px 0px 8px 4px rgba(169,71,210,1) !important;
     box-shadow: 0px 0px 8px 4px rgba(169,71,210,1) !important;    
+}
+
+.pad-text{
+    -ms-user-select: none; /* Internet Explorer */
+    -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+    -webkit-user-select: none; /* Chrome, Safari, and Opera */
+    -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
 }

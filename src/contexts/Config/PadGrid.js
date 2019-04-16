@@ -14,5 +14,7 @@ export default class GridPad {
         this.currentGain = 1;
         this.detune = 0;
         this.sampleEnd = this.sampleStart;
+        this.midiCC = null;
+        this.midiNote = null;
     }
 }
