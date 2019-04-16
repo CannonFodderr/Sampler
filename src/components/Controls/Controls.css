@@ -10,7 +10,6 @@
 }
 .ctl-btn{
     width: fit-content;
-    border: 1px solid #F2EDEA;
     color: #F2EDEA;
     background-color: transparent;
     padding: 0.5vh 1vw;
@@ -19,8 +18,8 @@
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 0.03em;
     font-size: 1.2em;
-    font-weight: 800;
-    margin: 0vh 1vw 0vh 0vw;
+    border: none;
+    margin: 0vh 0.5vw 0vh 0vw;
     outline: none;
     -ms-user-select: none; /* Internet Explorer */
     -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
@@ -30,14 +29,12 @@
 .ctl-btn:hover{
     color: #0B0002;
     background-color: #F2EDEA;
-    border: 1px solid #0B0002;
 }
 
 .ctl-select-wrapper{
     display: inline;
     height: 100%;
     width: fit-content;
-    border: 1px solid #F2EDEA;
     color: #F2EDEA;
     background-color: transparent;
     padding: 0.5vh 1vw;
