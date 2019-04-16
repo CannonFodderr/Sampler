@@ -6,8 +6,6 @@ import midiMap from '../../Config/midiMap';
 
 export default (props) => {
     let context = useContext(Context);
-    
-    console.log(context.midiInputs)
     const renderSelectOptions = () => {
         if(!context.midiInputs) return 
         else return context.midiInputs.map(input => {
@@ -25,7 +23,7 @@ export default (props) => {
     const addMidiListeners = () => {
         context.midiInputs.forEach(input => {
             input.onmidimessage = (e) => {
-                console.log(e);
+                // console.log(e);
                 let cmd = e.data[0];
                 let note = e.data[1];
                 let velocity = e.data[2];
