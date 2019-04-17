@@ -1,4 +1,4 @@
-import {HANDLE_PAD_STOP, UPDATE_EDITOR_DATA, HANDLE_PAD_TRIGGER, CREATE_ANALYSER, UPDATE_SOURCES} from '../reducers/types'
+import * as types from '../reducers/types'
 import Colors from '../Config/ColorScheme';
 
 export const setCTX = async (context) => {
@@ -8,7 +8,7 @@ export const setCTX = async (context) => {
 export const createAnalyser = (context, ctx) =>{
     let analyser = ctx.createAnalyser();
     analyser.connect(ctx.destination);
-    context.dispatch({type: CREATE_ANALYSER, payload: {ctx, analyser}})
+    context.dispatch({type: types.CREATE_ANALYSER, payload: {ctx, analyser}})
 }
 
 export const updateSources = (context, file) => {
@@ -27,7 +27,7 @@ export const updateSources = (context, file) => {
             gridPadsArr[context.selectedPad].sampleEnd = buffer.duration;
             gridPadsArr[context.selectedPad].gainNode = context.ctx.createGain();
             gridPadsArr[context.selectedPad].gainNode.connect(context.ctx.destination);
-            context.dispatch({type: UPDATE_SOURCES, payload: {sources, gridPadsArr}});
+            context.dispatch({type: types.UPDATE_SOURCES, payload: {sources, gridPadsArr}});
         })
     }
     reader.readAsArrayBuffer(file);
@@ -47,7 +47,7 @@ export const handlePadTrigger = (context, padId, velocity = 127) => {
         gridPadsArr[padId].source = newSource;
         gridPadsArr[padId].isPlaying = true;
         if(context.selectedPad !== padId){
-            context.dispatch({type: HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}});
+            context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}});
         }
         newSource.connect(context.gridPadsArr[padId].gainNode);
         newSource.detune.value = context.gridPadsArr[padId].detune;
@@ -57,7 +57,7 @@ export const handlePadTrigger = (context, padId, velocity = 127) => {
         context.gridPadsArr[padId].source.stop(context.ctx.currentTime + context.gridPadsArr[padId].sampleEnd);
     } else {
         if(context.selectedPad !== padId){
-            context.dispatch({type: HANDLE_PAD_TRIGGER, payload: {selectedPad}});
+            context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {selectedPad}});
         }
     }
 }
@@ -66,7 +66,7 @@ export const handlePadStop = (context, padId, gridPadsArr) => {
     if(context.gridPadsArr[padId].source && context.gridPadsArr[padId].selfMuted){
         context.gridPadsArr[padId].source.stop();
         context.gridPadsArr[padId].isPlaying = false
-        context.dispatch({type: HANDLE_PAD_STOP, payload: {gridPadsArr}});
+        context.dispatch({type: types.HANDLE_PAD_STOP, payload: {gridPadsArr}});
     }
 }
 
@@ -103,5 +103,5 @@ export const updateEditorData = ({context, cmd, val}) => {
         newPadsArr[context.selectedPad].color = Colors[val];
     }
     let payload = {gridPadsArr: newPadsArr, selectedPad}
-    context.dispatch({type: UPDATE_EDITOR_DATA, payload });
+    context.dispatch({type: types.UPDATE_EDITOR_DATA, payload });
 }

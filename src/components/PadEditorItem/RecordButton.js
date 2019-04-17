@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import {TOGGLE_IS_RECORDING} from '../../reducers/types';
 import {Context} from '../../contexts/SamplerContext';
+import {updateSources} from '../../actions'
 import Colors from '../../Config/ColorScheme';
 import './PadEditorButtons.css';
 
@@ -42,7 +43,7 @@ export default () => {
                     recordedBlob.name = "sample record";
                     recordedChunks = [];
                     recorder = null;
-                    context.updateSources(recordedBlob)
+                    updateSources(context, recordedBlob)
                     let monitorTracks = monitorStream.getAudioTracks();
                     monitorTracks.forEach(track => track.stop());
                     let recTracks = stream.getAudioTracks();
