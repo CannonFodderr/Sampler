@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {updateEditorData} from '../../actions'
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 
@@ -26,7 +27,7 @@ export default (props) => {
         })
     }
     const updatePadColor = (color) => {
-        props.updateEditorData({cmd: "color", val: color})
+        updateEditorData({context, cmd: "color", val: color})
     }
     return (
         <div className="pad-item-wrapper" style={style}>

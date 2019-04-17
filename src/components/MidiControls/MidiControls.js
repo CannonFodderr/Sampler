@@ -1,5 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {SET_MIDI_INPUTS} from '../../reducers/types'; 
+import {updateEditorData} from '../../actions'
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 import '../Controls/Controls.css';
@@ -34,23 +35,23 @@ export default (props) => {
                 }
                 if(midiMap[note].cc === "gain"){
                     let gain = Math.pow(velocity, 2) / Math.pow(127, 2);
-                    context.updateEditorData({cmd: "gain", val: gain});
+                    updateEditorData({context, cmd: "gain", val: gain});
                 }
                 if(midiMap[note].cc === "detune"){
                     let detune = Math.round(Math.pow(velocity, 2) / Math.pow(127, 2) * Math.pow(10, 3));
-                    context.updateEditorData({cmd: "detune", val: detune});
+                    updateEditorData({context, cmd: "detune", val: detune});
                 }
                 if(midiMap[note].cc === "sampleStart"){
                     let sourceAvailable = context.gridPadsArr[context.selectedPad].source
                     if(!sourceAvailable || !sourceAvailable.buffer) return
                     let start = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
-                    context.updateEditorData({cmd: "start", val: start});
+                    updateEditorData({context, cmd: "start", val: start});
                 }
                 if(midiMap[note].cc === "sampleEnd"){
                     let sourceAvailable = context.gridPadsArr[context.selectedPad].source
                     if(!sourceAvailable || !sourceAvailable.buffer) return
                     let end = Math.pow(velocity, 2) / Math.pow(127, 2) * sourceAvailable.buffer.duration
-                    context.updateEditorData({cmd: "end", val: end});
+                    updateEditorData({context, cmd: "end", val: end});
                 }
             }
         });

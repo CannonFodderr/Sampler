@@ -1,8 +1,7 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useReducer} from 'react';
 import * as types from '../reducers/types';
 import updateEditorReducer from '../reducers/samplerReducer';
 import INITIAL_STATE from './Config/AudioInitialState';
-import GridPad from './Config/PadGrid';
 
 export const Context = React.createContext();
 
@@ -16,23 +15,6 @@ export function SamplerContextStore(props) {
         let analyser = ctx.createAnalyser();
         analyser.connect(ctx.destination);
         dispatch({type: types.CREATE_ANALYSER, payload: {ctx, analyser}})
-    }
-    const testForTouchDevice = () => {
-        return 'ontouchstart' in window;
-    }
-    const testForMidiAPI = () => {
-        return "requestMIDIAccess" in navigator;
-    }
-    const generateGrid = () => {
-        let midiEnabled = testForMidiAPI();
-        let touchEnabled = testForTouchDevice();
-        let gridPadsArr = [];
-        for(let i = 0; i < state.numPads; i++){
-            let newPad = new GridPad({id: i})
-            gridPadsArr.push(newPad)
-        }
-        let payload = {gridPadsArr, touchEnabled, midiEnabled}
-        dispatch({ type: types.GENERATE_GRID, payload })
     }
     const updateSources = (file) => {
         let reader = new FileReader();
@@ -82,9 +64,6 @@ export function SamplerContextStore(props) {
             }
         }
     }
-    useEffect(() => { 
-        if(state.gridPadsArr.length < 1) generateGrid();
-    }, []);
     // console.log(state)
     return <Context.Provider value={{
         ...state,

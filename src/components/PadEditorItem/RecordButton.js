@@ -21,7 +21,6 @@ let style = {
 
 export default () => {
     const context = useContext(Context);
-
     const toggleIsRecording = (monitor) => {
         let isRecording = !context.isRecording
         context.dispatch({type: TOGGLE_IS_RECORDING, payload: { isRecording, monitor }});
