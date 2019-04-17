@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {Context} from '../../contexts/SamplerContext';
+import React from 'react';
 import Colors from '../../Config/ColorScheme';
 import './PadEditorButtons.css';
 
@@ -16,14 +15,13 @@ let style = {
     margin: "1vh auto"
 }
 
-export default ({cmd, content}) => {
-    const context = useContext(Context);
+export default ({cmd, content, updateEditorData}) => {
     return (
         <div className="pad-item-wrapper" style={style}>
             <button
             className="editor-btn btn-play"
             id="next"
-            onClick={(e) => { context.updateEditorData({cmd: cmd, val: "1"})}}
+            onClick={(e) => { updateEditorData({cmd: cmd, val: "1"})}}
             >
             {content}
             </button>

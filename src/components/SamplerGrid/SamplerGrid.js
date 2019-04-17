@@ -28,6 +28,7 @@ const SamplerGrid = () => {
         if(!context.editMode) return <div>{gridArr.map((item) => { return renderPad(item) })}</div>
         return <PadEditor />
     }
+    console.log(context)
     return (
         <div 
         className="grid-wrapper" 

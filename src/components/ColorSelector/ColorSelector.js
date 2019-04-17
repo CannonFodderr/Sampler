@@ -15,7 +15,7 @@ let style = {
     margin: "1vh auto"
 }
 
-export default () => {
+export default (props) => {
     const context = useContext(Context);
     const renderColorItem = () => {
         let colorNames = Object.keys(Colors);
@@ -26,7 +26,7 @@ export default () => {
         })
     }
     const updatePadColor = (color) => {
-        context.updateEditorData({cmd: "color", val: color})
+        props.updateEditorData({cmd: "color", val: color})
     }
     return (
         <div className="pad-item-wrapper" style={style}>

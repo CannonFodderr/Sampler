@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {TOGGLE_REC_MODE, CLEAR_SELECTED_PAD, TOGGLE_EDIT_MODE} from '../../reducers/types';
 import './Controls.css';
 import {Context} from '../../contexts/SamplerContext';
 import MidiControls from '../MidiControls/MidiControls';
@@ -13,13 +14,29 @@ const Controls = (props) => {
         if(!validExt) return console.error("Unable to load selected file")
         return context.updateSources(file)
     }
+    const toggleRecMode = () => {
+        let recMode = !context.recMode
+        context.dispatch({type: TOGGLE_REC_MODE, payload: {recMode}})
+    }
+    const toggleEditMode = () => {
+        let editMode = !context.editMode;
+        let recMode = false;
+        context.dispatch({type: TOGGLE_EDIT_MODE, payload: {editMode, recMode} });
+    }
+    const clearSelectedPad = () => {
+        let sources = {...context.sources}
+        sources[context.selectedPad] = {buffer: null, name: "", isPlaying: false}
+        let gridPadsArr = [...context.gridPadsArr];
+        gridPadsArr[context.selectedPad].source = null
+        context.dispatch({type: CLEAR_SELECTED_PAD, payload: {sources, gridPadsArr}})
+    }
     const renderRecButton = () => {
         if(context.editMode && currentPad && !currentPad.source){
             if(!context.recMode){
                 return(
                     <div className="file-selector-wrapper">
                         <button
-                        onClick={() => { context.toggleRecMode() }}
+                        onClick={() => { toggleRecMode() }}
                         className="ctl-btn"
                         >REC</button>
                     </div>
@@ -28,7 +45,7 @@ const Controls = (props) => {
                 return(
                     <div className="file-selector-wrapper">
                         <button
-                        onClick={() => { context.toggleRecMode() }}
+                        onClick={() => { toggleRecMode() }}
                         className="ctl-btn"
                         >EDIT</button>
                     </div>
@@ -58,10 +75,9 @@ const Controls = (props) => {
         )
     }
     const renderSourceLoadUnload = () => {
-        // if(context.editMode && context.recMode) return;
         if(context.editMode && currentPad && !currentPad.source) return renderFileUpload();
         if(context.editMode && currentPad && currentPad.source) {
-            return <button className="ctl-btn" onClick={() => context.clearSelectedPad()}>UNLOAD</button>
+            return <button className="ctl-btn" onClick={() => clearSelectedPad()}>UNLOAD</button>
         }
         if(context.editMode && currentPad && !currentPad.source) return renderFileUpload()
     }
@@ -69,11 +85,12 @@ const Controls = (props) => {
         if(!context.midiEnabled) return
         return <MidiControls />
     }
+    
     return (
         <div className="controls-wrapper">
             <button 
             className="ctl-btn" 
-            onClick={() => context.toggleEditMode()}>{props.editToggleText}</button>
+            onClick={() => toggleEditMode()}>{props.editToggleText}</button>
             {renderSourceLoadUnload()}
             {renderRecButton()}
             {renderMidiControls()}

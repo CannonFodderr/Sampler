@@ -1,4 +1,5 @@
 import React, {useContext, useEffect} from 'react';
+import {SET_MIDI_INPUTS} from '../../reducers/types'; 
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 import '../Controls/Controls.css';
@@ -54,6 +55,9 @@ export default (props) => {
             }
         });
     }
+    const setMidiInputs = (midiInputs) => {
+        context.dispatch({type: SET_MIDI_INPUTS, payload: {midiInputs}})
+    }
     const getMidiDevices = () => {
         navigator.requestMIDIAccess()
         .then((access) => {
@@ -63,10 +67,10 @@ export default (props) => {
                 console.log(e.port.name, e.port.manufacturer, e.port.state);
             } 
             let filteredInputs = inputs.filter(input => typeof(input) === "object")
-            context.setMidiInputs(filteredInputs);
+            setMidiInputs(filteredInputs);
         })
         .catch(err => {
-            context.setMidiInputs(null);
+            setMidiInputs(null);
         })
     }
 
