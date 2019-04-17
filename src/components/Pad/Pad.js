@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../../contexts/SamplerContext';
+import {handlePadTrigger} from '../../actions'
 import Colors from '../../Config/ColorScheme';
 import touchCTRL from '../../Config/touchControls';
 import './Pad.css';
@@ -12,7 +13,7 @@ export default (props) => {
     const handleTouchStart = (padId) => {
         if(!touchCTRL[padId].hold){
             touchCTRL[padId].hold = true;
-            context.handlePadTrigger(padId);
+            handlePadTrigger(context, padId);
         }
     }
     const handleTouchEnd = (padId) => {
@@ -20,7 +21,7 @@ export default (props) => {
     }
     const handleMouseClick = (padId) => {
         if(!context.touchEnabled){
-            context.handlePadTrigger(padId)
+            handlePadTrigger(context, padId)
         }
     }
     return <div 

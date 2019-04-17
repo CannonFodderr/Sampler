@@ -1,5 +1,66 @@
-import {HANDLE_PAD_STOP, UPDATE_EDITOR_DATA} from '../reducers/types'
+import {HANDLE_PAD_STOP, UPDATE_EDITOR_DATA, HANDLE_PAD_TRIGGER, CREATE_ANALYSER, UPDATE_SOURCES} from '../reducers/types'
 import Colors from '../Config/ColorScheme';
+
+export const setCTX = async (context) => {
+    let ctx = !context.ctx ? new (window.AudioContext || window.webkitAudioContext)() : null;
+    createAnalyser(context, ctx)
+}
+export const createAnalyser = (context, ctx) =>{
+    let analyser = ctx.createAnalyser();
+    analyser.connect(ctx.destination);
+    context.dispatch({type: CREATE_ANALYSER, payload: {ctx, analyser}})
+}
+
+export const updateSources = (context, file) => {
+    let reader = new FileReader();
+    reader.onload = e => {
+        context.ctx.decodeAudioData(e.target.result, (buffer) => {
+            let sources = {...context.sources}
+            let name = file.name.split('.')[0]
+            let waveformData = buffer.getChannelData(0)
+            sources[context.selectedPad] = {buffer: buffer, name, isPlaying: false, waveformData}
+            let gridPadsArr = context.gridPadsArr;
+            let newSource = context.ctx.createBufferSource();
+            newSource.buffer = buffer;
+            gridPadsArr[context.selectedPad].source = newSource;
+            gridPadsArr[context.selectedPad].source.start()
+            gridPadsArr[context.selectedPad].sampleEnd = buffer.duration;
+            gridPadsArr[context.selectedPad].gainNode = context.ctx.createGain();
+            gridPadsArr[context.selectedPad].gainNode.connect(context.ctx.destination);
+            context.dispatch({type: UPDATE_SOURCES, payload: {sources, gridPadsArr}});
+        })
+    }
+    reader.readAsArrayBuffer(file);
+}
+
+export const handlePadTrigger = (context, padId, velocity = 127) => {
+    console.log(context)
+    let selectedSource =  context.sources[padId];
+    let selectedPad = padId
+    if(selectedSource && selectedSource.buffer){
+        if(context.gridPadsArr[padId].source && context.gridPadsArr[padId].selfMuted){
+            context.gridPadsArr[padId].source.stop();
+        }
+        let gridPadsArr = context.gridPadsArr;
+        let newSource = context.ctx.createBufferSource();
+        newSource.buffer = context.sources[padId].buffer;
+        gridPadsArr[padId].source = newSource;
+        gridPadsArr[padId].isPlaying = true;
+        if(context.selectedPad !== padId){
+            context.dispatch({type: HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}});
+        }
+        newSource.connect(context.gridPadsArr[padId].gainNode);
+        newSource.detune.value = context.gridPadsArr[padId].detune;
+        let currentGain = velocity !== 127 ? Math.pow(velocity, 2) / Math.pow(127, 2) : context.gridPadsArr[padId].currentGain;
+        context.gridPadsArr[padId].gainNode.gain.setValueAtTime(currentGain, context.ctx.currentTime)
+        context.gridPadsArr[padId].source.start(context.ctx.currentTime, context.gridPadsArr[padId].sampleStart , context.gridPadsArr[padId].sampleEnd);
+        context.gridPadsArr[padId].source.stop(context.ctx.currentTime + context.gridPadsArr[padId].sampleEnd);
+    } else {
+        if(context.selectedPad !== padId){
+            context.dispatch({type: HANDLE_PAD_TRIGGER, payload: {selectedPad}});
+        }
+    }
+}
 
 export const handlePadStop = (context, padId, gridPadsArr) => {
     if(context.gridPadsArr[padId].source && context.gridPadsArr[padId].selfMuted){
@@ -33,7 +94,7 @@ export const updateEditorData = ({context, cmd, val}) => {
         selectedPad = context.selectedPad + val > context.gridPadsArr.length - 1 ?  0 : context.selectedPad + val;
     }
     if(cmd === "play"){
-        context.handlePadTrigger(context.selectedPad);
+        handlePadTrigger(context, context.selectedPad);
     }
     if(cmd === "stop"){
         handlePadStop(context.selectedPad, newPadsArr);

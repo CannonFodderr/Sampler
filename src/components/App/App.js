@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../../contexts/SamplerContext';
+import {handlePadTrigger} from '../../actions'
 import keyCTRL from '../../Config/keyboardControls';
 import SamplerGrid from '../SamplerGrid/SamplerGrid';
 import StartScreen from '../StartScreen/StartScreen';
@@ -21,7 +22,7 @@ export default function App () {
         let keyTrigger = keyCTRL[e.which];
         if(keyTrigger && !keyTrigger.hold && !e.repeat){
             keyCTRL[e.which].hold = true;
-            context.handlePadTrigger(keyTrigger.padId);
+            handlePadTrigger(context, keyTrigger.padId);
         };
     }
     const handleKeyUp = (e) => {

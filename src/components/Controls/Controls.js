@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {TOGGLE_REC_MODE, CLEAR_SELECTED_PAD, TOGGLE_EDIT_MODE} from '../../reducers/types';
+import {updateSources} from '../../actions'
 import './Controls.css';
 import {Context} from '../../contexts/SamplerContext';
 import MidiControls from '../MidiControls/MidiControls';
@@ -12,7 +13,7 @@ const Controls = (props) => {
         let ext = file.name.split('.')[1]
         let validExt = /mp3|wav|m4a/.test(ext)
         if(!validExt) return console.error("Unable to load selected file")
-        return context.updateSources(file)
+        return updateSources(context, file)
     }
     const toggleRecMode = () => {
         let recMode = !context.recMode

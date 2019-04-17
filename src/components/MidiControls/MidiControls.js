@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {SET_MIDI_INPUTS} from '../../reducers/types'; 
-import {updateEditorData} from '../../actions'
+import {updateEditorData, handlePadTrigger} from '../../actions'
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 import '../Controls/Controls.css';
@@ -31,7 +31,7 @@ export default (props) => {
                 let velocity = e.data[2];
                 if(!midiMap[note]) return
                 if(midiMap[note].cc === "note" && cmd - context.midiChannel === 144){
-                    context.handlePadTrigger(midiMap[note].padId, velocity)
+                    handlePadTrigger(context, midiMap[note].padId, velocity)
                 }
                 if(midiMap[note].cc === "gain"){
                     let gain = Math.pow(velocity, 2) / Math.pow(127, 2);
