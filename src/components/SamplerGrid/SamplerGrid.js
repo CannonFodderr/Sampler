@@ -1,5 +1,7 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Context} from '../../contexts/SamplerContext';
+import * as types from '../../reducers/types';
+import GridPad from '../../contexts/Config/PadGrid';
 import Colors from '../../Config/ColorScheme';
 import Hud from '../Hud/Hud';
 import PadEditor from '../PadEditor/PadEditor';
@@ -28,6 +30,26 @@ const SamplerGrid = () => {
         if(!context.editMode) return <div>{gridArr.map((item) => { return renderPad(item) })}</div>
         return <PadEditor />
     }
+    const testForTouchDevice = () => {
+        return 'ontouchstart' in window;
+    }
+    const testForMidiAPI = () => {
+        return "requestMIDIAccess" in navigator;
+    }
+    const generateGrid = () => {
+        let midiEnabled = testForMidiAPI();
+        let touchEnabled = testForTouchDevice();
+        let gridPadsArr = [];
+        for(let i = 0; i < context.numPads; i++){
+            let newPad = new GridPad({id: i})
+            gridPadsArr.push(newPad)
+        }
+        let payload = {gridPadsArr, touchEnabled, midiEnabled}
+        context.dispatch({ type: types.GENERATE_GRID, payload })
+    }
+    useEffect(() => { 
+        if(context.gridPadsArr.length < 1) generateGrid();
+    }, []);
     return (
         <div 
         className="grid-wrapper" 

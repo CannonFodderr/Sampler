@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {updateEditorData} from '../../actions'
 import {Context} from '../../contexts/SamplerContext';
 import Colors from '../../Config/ColorScheme';
 import './PadEditorItem.css';
@@ -17,7 +18,7 @@ let style = {
 }
 
 export default (props) => {
-    const context = useContext(Context);
+    const context = useContext(Context)
     return (
         <div className="pad-item-wrapper" style={style}>
             <label htmlFor={props.label} 
@@ -31,7 +32,7 @@ export default (props) => {
             name={props.label} 
             step={props.step}
             id={props.label}
-            onChange={(e) => { context.updateEditorData({cmd: props.label, val: e.target.value})}}/>
+            onChange={(e) => { updateEditorData({context, cmd: props.label, val: e.target.value})}}/>
         </div>
     )
 }

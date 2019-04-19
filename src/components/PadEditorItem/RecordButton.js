@@ -1,5 +1,7 @@
 import React, {useContext} from 'react';
+import {TOGGLE_IS_RECORDING} from '../../reducers/types';
 import {Context} from '../../contexts/SamplerContext';
+import {updateSources} from '../../actions'
 import Colors from '../../Config/ColorScheme';
 import './PadEditorButtons.css';
 
@@ -20,6 +22,11 @@ let style = {
 
 export default () => {
     const context = useContext(Context);
+    const toggleIsRecording = (monitor) => {
+        let isRecording = !context.isRecording
+        context.dispatch({type: TOGGLE_IS_RECORDING, payload: { isRecording, monitor }});
+    }
+    
     const startRecording = () => {
         navigator.mediaDevices.getUserMedia({audio: true, video: false})
             .then(stream => {
@@ -36,7 +43,7 @@ export default () => {
                     recordedBlob.name = "sample record";
                     recordedChunks = [];
                     recorder = null;
-                    context.updateSources(recordedBlob)
+                    updateSources(context, recordedBlob)
                     let monitorTracks = monitorStream.getAudioTracks();
                     monitorTracks.forEach(track => track.stop());
                     let recTracks = stream.getAudioTracks();
@@ -45,14 +52,14 @@ export default () => {
                 recorder.ondataavailable  = (e) => {
                     recordedChunks.push(e.data);
                 }
-                context.toggleIsRecording(monSource);
+                toggleIsRecording(monSource);
             })
             .catch(err => console.log(err))
     }
     const stopRecording = () => {
         recorder.stop();
         context.monitor.disconnect();
-        context.toggleIsRecording(null);
+        toggleIsRecording(null);
     }
     const renderButtonContent = () => {
         if(!context.isRecording){

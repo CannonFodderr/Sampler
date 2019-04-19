@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import {Context} from '../../contexts/SamplerContext';
+import {setCTX} from '../../actions'
 import './StartScreen.css';
 import Colors from '../../Config/ColorScheme';
 
@@ -32,7 +33,7 @@ export default () => {
                 </div>
                 <button 
                 className="start-btn"
-                onClick={() => { context.setCTX()}}
+                onClick={() => { setCTX(context)}}
                 >START</button>
             </div>
         )
