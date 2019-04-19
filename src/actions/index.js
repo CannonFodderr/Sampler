@@ -34,7 +34,6 @@ export const updateSources = (context, file) => {
 }
 
 export const handlePadTrigger = (context, padId, velocity = 127) => {
-    console.log(context)
     let selectedSource =  context.sources[padId];
     let selectedPad = padId
     if(selectedSource && selectedSource.buffer){
