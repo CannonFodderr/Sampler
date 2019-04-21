@@ -33,6 +33,21 @@ export const updateSources = (context, file) => {
     reader.readAsArrayBuffer(file);
 }
 
+let timer;
+function debounce (fn, delay) {
+    return function (...args) {
+        if(timer) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(() => {update(args[0], args[1])}, delay)
+    }
+}
+
+function update (...args) {
+    args[0].dispatch(args[1]);
+    console.log("Updated")
+}
+
 export const handlePadTrigger = (context, padId, velocity = 127) => {
     let selectedSource =  context.sources[padId];
     let selectedPad = padId
@@ -46,7 +61,9 @@ export const handlePadTrigger = (context, padId, velocity = 127) => {
         gridPadsArr[padId].source = newSource;
         gridPadsArr[padId].isPlaying = true;
         if(context.selectedPad !== padId){
-            context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}});
+            // context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}});
+            let payload = {type: types.HANDLE_PAD_TRIGGER, payload: {gridPadsArr, selectedPad}}
+            debounce(() => update, 300)(context, payload)
         }
         newSource.connect(context.gridPadsArr[padId].gainNode);
         newSource.detune.value = context.gridPadsArr[padId].detune;
@@ -56,7 +73,9 @@ export const handlePadTrigger = (context, padId, velocity = 127) => {
         context.gridPadsArr[padId].source.stop(context.ctx.currentTime + context.gridPadsArr[padId].sampleEnd);
     } else {
         if(context.selectedPad !== padId){
-            context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {selectedPad}});
+            // context.dispatch({type: types.HANDLE_PAD_TRIGGER, payload: {selectedPad}});
+            let payload = {type: types.HANDLE_PAD_TRIGGER, payload: {selectedPad}}
+            debounce(() => update, 300)(context, payload)
         }
     }
 }
