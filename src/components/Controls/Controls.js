@@ -71,7 +71,7 @@ const Controls = (props) => {
                 style={{display:"none"}}
                 id="fileSelector"
                 onChange={(e) => validateSelectedFile(e.target.files[0])} 
-                accept="audio/*"/>
+                accept="audio/*" multiple={false}/>
             </div>    
         )
     }
