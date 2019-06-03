@@ -8,12 +8,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "./Assets/cf144.png",
+      "src": "cf144.png",
       "sizes": "144x144",
       "type": "image/png"
     }
   ],
   "start_url": ".",
+  "homepage": ".",
   "display": "standalone",
   "theme_color": "#434343",
   "background_color": "#434343"
