@@ -1,65 +1,58 @@
-let CACHE_NAME = 'samplerv1';
-let urlsToCache = [
+var CACHE_NAME = 'samplerv1';
+var PRECACHE_URLS = [
     '/',
+    'index.html',
+    'cf144.png',
+    'cf192.png',
+    'cf512.png'
 ];
 if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('./sw.js')
+    navigator.serviceWorker.register('sw.js', {scope: './'})
     .then(reg => {
-        reg.addEventListener('updatefound', () => {
-            let newWorker = reg.installing
-            let accepted = confirm("Install new update")
-            if(accepted){
-                newWorker.skipWaiting()
+        reg.onupdatefound = () => {
+            const installingWorker = reg.installing
+            installingWorker.onstatechange = () => {
+                switch(installingWorker.state){
+                    case 'installed':
+                        if(navigator.serviceWorker.controller) {
+                            const confirmed = confirm("Update is available")
+                            if(confirmed) reg.update()
+                        }
+                        break
+                    default: return null;
+                }
             }
-        })
+        }
     })
     .catch(err => console.error(err))
-}
-self.addEventListener('updatefound', () => {
-    console.log("Found new update")
+} 
+self.addEventListener('activate', event => {
+    console.log(event)
 })
 
-self.addEventListener('install', function(event) {
-  // Perform install steps
-event.waitUntil(
-    caches.open(CACHE_NAME)
-    .then(function(cache) {
-        console.log('Opened cache');
-        return cache.addAll(urlsToCache);
-        })
-    );
-});
 
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-        caches.match(event.request)
-        .then(function(response) {
-            // Cache hit - return response
-            if (response) {
-                return response;
-            }
-            
-            return fetch(event.request).then(
-                function(response) {
-                    // Check if we received a valid response
-                    if(!response || response.status !== 200 || response.type !== 'basic') {
-                        return response;
-                    }
-                    
-                    // IMPORTANT: Clone the response. A response is a stream
-                    // and because we want the browser to consume the response
-                    // as well as the cache consuming the response, we need
-                    // to clone it so we have two streams.
-                    var responseToCache = response.clone();
-                    
-                    caches.open(CACHE_NAME)
-                    .then(function(cache) {
-                        cache.put(event.request, responseToCache);
-                    });
-                    
-                    return response;
-                }
-                );
+self.addEventListener('install', event => {
+    console.log("Installing SW....")
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+        .then(cache => {
+            cache.addAll(PRECACHE_URLS)
+        })
+        .then(self.skipWaiting())
+    )
+})
+
+self.addEventListener('fetch', function fetcher (event) {
+    var request = event.request;
+    // check if request 
+    if (request.url.indexOf('assets.contentful.com') > -1) {
+      // contentful asset detected
+        event.respondWith(
+            caches.match(event.request).then(function(response) {
+            // return from cache, otherwise fetch from network
+                return response || fetch(request);
             })
-            );
-        });
+        );
+    }
+    // otherwise: ignore event
+});
