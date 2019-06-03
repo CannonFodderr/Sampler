@@ -6,13 +6,6 @@ if('serviceWorker' in navigator){
     })
     .catch(err => console.error(err))
 }
-self.addEventListener('activate', e => {
-    console.log("SW activated...")
-})
-
-self.addEventListener('install', e => {
-    console.log("SW Installed...")
-})
 
 self.addEventListener('fetch', e => {
     e.preventDefault()

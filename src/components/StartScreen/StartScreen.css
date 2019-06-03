@@ -13,7 +13,7 @@
 .start-info{
     font-size: 1.2rem;
 }
-.start-btn{
+.btn{
     cursor: pointer;
     font-family: 'Orbitron', sans-serif;
     border: 1px solid #0B0002;
@@ -24,7 +24,7 @@
     font-size: 1.2em;
     
 }
-.start-btn:hover{
+.btn:hover{
     background-color: #3e3e3e;
     color: #F2EDEA;
     background-color: #14ABBD;
